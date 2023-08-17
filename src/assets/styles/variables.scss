@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900&display=swap');
+
+$white: #ffffff;
+$black: #000000;
+$gray: #4d4d4d;
+$light-gray: #e6e6e6;
+
+$accent: #b53bfe;
+$accent-hover: linear-gradient(112deg,#4f53ee 0%,#a94af7 100%);
+$accent-transparent: rgba(181, 59, 254, .2);
+
+$bg-header: #101010;
+$bg-header-transparent: rgba(0,0,0,.7);
+$bg: #f5f5f5;
+$bg-second: #f5f5f5;
+$bg-transparent: rgba(0,0,0,.5);
+
+@mixin test {
+    background: $white;
+}
+
+$main-font: 'Nunito Sans', sans-serif;

@@ -49,19 +49,14 @@
     methods: {
       findById(tree, nodeId) {
       for (let node of tree) {
-          // console.log(node.id + ":" + nodeId)
           if (node.id === nodeId) return node
-          // console.log(node)
-          // console.log(node.subordinates)
           let subordinates = node.subordinates;
-          // console.log(subordinates)
           if (!subordinates) continue;
           if (subordinates.length > 0) {
-              // console.log("subordinates not null " + subordinates.length)
               let desiredNode = this.findById(subordinates, nodeId)
               if (desiredNode) return desiredNode
           } else {
-              // console.log("subordinates " + subordinates.lenght)
+              return;
           }
       }
       return false

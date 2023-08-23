@@ -11,18 +11,17 @@
               v-if="card.subordinates.length"
               @click.stop="isVissible = !isVissible"
               class="btn-small"
-            >
-              ->
-            </div>
+            >↓</div>
           </div>
         </div>
-        <SingleCard
-          v-for="card in card.subordinates"
-          :key="card.id"
-          :card="card"
-          class="card__child-card"
-          v-if="isVissible"
-        />
+        <div v-if="isVissible" class="card__child">
+          <SingleCard
+            v-for="card in card.subordinates"
+            :key="card.id"
+            :card="card"
+            class="card__child__card"
+          />
+      </div>
       </div>
   </div>
 </template>
@@ -60,10 +59,11 @@ props: {
   &__wrapper{
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 20px;
     justify-content: flex-end;
     background: $white;
     border-radius: 10px;
+    padding: 20px;
   }
 
   &__priority {
@@ -74,10 +74,11 @@ props: {
 
   &__content{
     width: 100%;
-    padding: 20px;
+    // padding: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
   }
 
   &__btn {
@@ -86,10 +87,16 @@ props: {
     width: 50px;
   }
 
-  &__child-card{
-    margin-left: 20px;
-    border: 1px solid $gray;
-    border-radius: 10px;
+  &__child {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    &__card{
+      // margin-left: 20px;
+      border: 1px solid $light-gray;
+      border-radius: 10px;
+    }
   }
 
   &__child-card {

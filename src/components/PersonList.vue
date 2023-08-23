@@ -1,6 +1,6 @@
 <template>
   <div class="table-wrapper">
-    <span class="btn-default" @click="openForm">Добавить</span>
+    <div class="btn-default" @click="openForm">Добавить</div>
 
     <!-- <div class="table">
       <div class="sort-btn" @click="nameSort">Имя</div>

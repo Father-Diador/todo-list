@@ -1,10 +1,10 @@
 <template>
-  <div @click.stop="closeForm" class="form__overlay">
+  <div @click.stop="toggleMenu" class="form__overlay">
     <div
       @click.stop
       class="form"
     >
-      <span @click="closeForm" class="form__cancel-btn">×</span>
+      <span @click="toggleMenu" class="form__cancel-btn">×</span>
       <div class="form__title">
         <h4>Добавить карточку</h4>   
       </div>
@@ -42,8 +42,25 @@
       </div>
 
       <div class="form__input-pos">
-        <label class="form__input-pos__label" for="">Привязка к карточке</label>
-        <PersonSelect 
+        <label class="form__input-pos__label" for="">
+          Приоритет
+        </label>
+        <select
+          v-model="card.priority"
+          class="form__input-pos__input"
+        >
+          <option value="">Выберите</option>
+          <option value="1">Высокий</option>
+          <option value="2">Средний</option>
+          <option value="3">Низкий</option>
+      </select>
+      </div>
+
+      <div v-if="selectOptions.length" class="form__input-pos">
+        <label class="form__input-pos__label" for="">
+          Привязка к карточке
+        </label>
+        <CardSelect 
           :selectOptions="selectOptions"
           v-model="card.selectedCard"
           class="form__input-pos__input"
@@ -56,64 +73,51 @@
   </div>
 </template>
 
-<script>
-import PersonSelect from '@/components/PersonAddForm/PersonSelect.vue'
+<script setup>
+import CardSelect from '@/components/CardCreateForm/CardSelect.vue'
+import { useMenu } from "@/stores/useMenu";
+import { reactive } from "vue";
 
-export default {
-  components: {PersonSelect},
-  data() {
-    return {
-      notActive: false,
-      card: {
-        title: '',
-        description: '',
-        selectedCard: '',
-        subordinates: [],
-        date: '',
-      },
+const menuStore = useMenu();
+const { toggle } = menuStore;
+const toggleMenu = () => { toggle() };
+
+let card = reactive({
+  priority: '',
+  title: '',
+  description: '',
+  selectedCard: '',
+  subordinates: [],
+  date: '',
+});
+
+const props = defineProps(['selectOptions']);
+const emit = defineEmits(['create']);
+
+console.log(props.selectOptions);
+
+const addCard = () => {
+  if (card.title !== '' && card.description !== '') {
+    card.id = Date.now();
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+    today = mm + '.' + dd + '.' + yyyy;
+
+    card.date = today;
+
+    if (card.priority == '') {
+      card.priority = '3';
     }
-  },
-  props: {
-    selectOptions: {
-      type: Array,
-      required: true,
-    },
-    activeForm: {
-      type: Boolean,
-      required: true,
-    }
-  },
-  methods: {
-    addCard() {
-      if (this.card.title !== '' && this.card.description !== '') {
-        this.card.id = Date.now();
-        let today = new Date();
-        let dd = String(today.getDate()).padStart(2, '0');
-        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        let yyyy = today.getFullYear();
-
-        today = mm + '.' + dd + '.' + yyyy;
-
-        this.card.date = today;
-        this.$emit('create', this.card)
-        this.card = {
-          title: '',
-          description: '',
-          selectedCard: '',
-          subordinates: [],
-          date: '',
-        }
-
-        this.closeForm();
-      } else {
-        alert('Ошибка! Поля не заполнены!')
-      }
-    },
-    closeForm() {
-      this.$emit('close', this.notActive)
-    }
+    emit('create', card)
+    console.log(card);
+    card = {};
+    toggleMenu();
+  } else {
+     alert('Ошибка! Поля не заполнены!')
   }
-}
+};
 </script>
 
 <style scoped lang="scss">

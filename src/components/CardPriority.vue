@@ -15,14 +15,8 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        priority: {
-            type: String,
-        }
-    }
-}
+<script setup>
+const props = defineProps(['priority']);
 </script>
 
 <style scoped lang="scss">

@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-      <div class="card__wrapper">
+      <div class="card__wrapper" :style="{ width: color }">
         <div class="card__content">
           <CardPriority :priority="card.priority" />
           <p>{{ card.title }}</p>
@@ -21,30 +21,19 @@
             :card="card"
             class="card__child__card"
           />
-      </div>
+        </div>
       </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import CardPriority from "@/components/CardPriority.vue"
+import { ref } from "vue";
 
-export default {
-components: {
-  CardPriority,
-},
-data() {
-  return {
-    isVissible: false,
-  }
-},
-props: {
-  card: {
-    type: Object,
-    required: true,
-  },
-}
-}
+const color = '1px solid blue';
+
+const isVissible = ref(false);
+const props = defineProps(['card']);
 </script>
 
 <style scoped lang="scss">

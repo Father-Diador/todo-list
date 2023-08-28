@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <div class="btn-default">Добавить</div>
+        <div class="btn-default" @click="toggleMenu">Добавить</div>
         <div class="header__date">
             <span>
                 Today
@@ -14,6 +14,12 @@
 
 <script setup>
 import { ref } from "vue";
+import { useMenu } from "@/stores/useMenu";
+
+const menuStore = useMenu();
+const { toggle } = menuStore;
+const toggleMenu = () => { toggle() };
+
 const currentDay = ref();
 
 let today = new Date();

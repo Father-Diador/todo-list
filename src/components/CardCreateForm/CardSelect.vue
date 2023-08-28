@@ -11,20 +11,15 @@
     </select>
 </template>
 
-<script>
-export default {
-    props: {
-      value: String,
-      selectOptions: {
-        type: Array,
-        required: true,
-      }
-    },
-    methods: {
-        selectedCard(event) {
-            this.$emit('input', card)
-            value: ''
-        }
-    },
-}
+<script setup>
+import { ref } from "vue";
+
+const card = ref('');
+
+const props = defineProps(['value', 'selectOptions']);
+const emit = defineEmits(['input']);
+
+const selectedCard = () => {
+    emit('input', card);
+};
 </script>

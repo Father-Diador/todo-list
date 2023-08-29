@@ -19,23 +19,41 @@ BODY {
     background: $bg;
     min-height: 100vh;
     font-family: $main-font;
+    // overflow: hidden;
 }
 
 .btn-default {
     cursor: pointer;
-    padding: 20px 30px;
+    padding: 14px;
     color: $white;
     background: $accent;
-    border-radius: 10px;
+    border-radius: 7px;
     font-size: 16px;
     font-family: $main-font;
     transition: 0.3s;
     font-weight: 600;
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
 
     &:hover {
         background: $accent-hover;
         transition: 0.3s;
+    }
+
+    &__plus {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        font-weight: 600;
+        background: $white;
+        border-radius: 50%;
+        color: $accent;
     }
 }
 
@@ -45,7 +63,7 @@ BODY {
     color: $white;
     background: $accent;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 18px;
     font-family: $main-font;
     transition: 0.3s;
     font-weight: 600;

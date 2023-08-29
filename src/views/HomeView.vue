@@ -1,17 +1,21 @@
 <template>
     <div class="wrapper">
+        <SideBar />
         <CardForm
             v-if="isOpen"
             @create="addCard"
             :selectOptions="selectOptions"
         />
         <CardList :cards="cards" />
+        <DashBoard />
     </div>
 </template>
   
 <script setup>
 import CardForm from '@/components/CardCreateForm/App.vue'
 import CardList from '@/components/CardList.vue'
+import SideBar from '@/components/SideBar.vue'
+import DashBoard from '@/components/DashBoard.vue'
 import { reactive, onBeforeMount } from "vue";
 import { storeToRefs } from "pinia";
 import { useMenu } from "@/stores/useMenu";
@@ -72,11 +76,11 @@ onBeforeMount(() => {
 });
 </script>
   
-<style scoped>
+<style lang="scss" scoped>
 .wrapper{
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 </style>

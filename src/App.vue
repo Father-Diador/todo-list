@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header />
+    <!-- <Header /> -->
     <div class="wrapper">
       <router-view></router-view>
     </div>
@@ -12,7 +12,7 @@ import Header from "@/components/Header.vue";
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  margin-top: 100px;
-}
+// .wrapper {
+//   margin-top: 100px;
+// }
 </style>

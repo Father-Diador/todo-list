@@ -1,18 +1,20 @@
 <template>
   <div class="card">
-      <div class="card__wrapper" :style="{ width: color }">
+      <div class="card__wrapper">
         <div class="card__content">
-          <CardPriority :priority="card.priority" />
           <p>{{ card.title }}</p>
           <p>{{ card.description }}</p>
           <p>{{ card.date }}</p>
-          <div class="card__btn">
+
+          <div class="card__content__priority">
+            <CardPriority :priority="card.priority" />
             <div
               v-if="card.subordinates.length"
               @click.stop="isVissible = !isVissible"
-              class="btn-small"
-            >↓</div>
+              class="card__content__chevron"
+            >▼</div>
           </div>
+
         </div>
         <div v-if="isVissible" class="card__child">
           <SingleCard
@@ -30,8 +32,6 @@
 import CardPriority from "@/components/CardPriority.vue"
 import { ref } from "vue";
 
-const color = '1px solid blue';
-
 const isVissible = ref(false);
 const props = defineProps(['card']);
 </script>
@@ -45,29 +45,46 @@ const props = defineProps(['card']);
   flex-direction: column;
   width: 100%;
 
-  &__wrapper{
+  &__wrapper {
+    background: $light-gray;
     display: flex;
     flex-direction: column;
-    gap: 20px;
     justify-content: flex-end;
-    background: $white;
     border-radius: 10px;
-    padding: 20px;
   }
 
-  &__priority {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-  }
-
-  &__content{
+  &__content {
+    height: 52px;
+    background: $white;
     width: 100%;
-    // padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 4px 18px -7px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0px 4px 18px -7px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 4px 18px -7px rgba(34, 60, 80, 0.2);
+
+    &__priority {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 20px;
+    }
+
+    &__chevron {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      border-radius: 50%;
+      background: $bg;
+      font-size: 18px;
+    }
   }
 
   &__btn {
@@ -77,13 +94,15 @@ const props = defineProps(['card']);
   }
 
   &__child {
+    margin: 15px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+
     &__card{
-      // margin-left: 20px;
-      border: 1px solid $light-gray;
+      margin-left: 20px;
+      width: calc(100% - 20px);
       border-radius: 10px;
     }
   }

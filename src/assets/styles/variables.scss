@@ -1,17 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/apercu-pro');
 
 $white: #ffffff;
 $black: #000000;
 $gray: #4d4d4d;
-$light-gray: #e6e6e6;
+$light-gray: #F0F1F3;
 
 $accent: #2c64e5;
 $accent-hover: linear-gradient(112deg,#2c64e5 0%,#3396ff 100%);
 $accent-transparent: rgba(181, 59, 254, .2);
 
-$main-font: #574E81;
-$second-font:#2962E8;
-$third-font: #5E5E5E;
+$main-color: #574E81;
+$second-color:#2962E8;
+$third-color: #5E5E5E;
 
 $bg-header: #101010;
 $bg-header-transparent: rgba(0,0,0,.7);

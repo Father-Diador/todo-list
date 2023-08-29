@@ -2,16 +2,32 @@
     <div class="priority">
         <div
             v-if="priority === '1'"
-            class="priority__marker priority__red"
-        ></div>
+            class="priority__wrapper"
+        >
+            <div class="priority__marker priority__red"></div>
+            <span>Высший</span>
+        </div>
         <div
             v-if="priority === '2'"
-            class="priority__marker priority__yellow"
-        ></div>
+            class="priority__wrapper"
+        >
+            <div class="priority__marker priority__orange"></div>
+            <span>Срочный</span>
+        </div>
         <div
             v-if="priority === '3'"
-            class="priority__marker priority__green"
-        ></div>
+            class="priority__wrapper"
+        >
+            <div class="priority__marker priority__green"></div>
+            <span>Высокий</span>
+        </div>
+        <div
+            v-if="priority === '4'"
+            class="priority__wrapper"
+        >
+            <div class="priority__marker priority__blue"></div>
+            <span>Нормальный</span>
+        </div>
     </div>
 </template>
 
@@ -24,8 +40,22 @@ const props = defineProps(['priority']);
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30px;
     height: 30px;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+
+        span {
+            font-size: 16px;
+            font-weight: 600;
+            color: $main-color;
+        }
+    }
+
     &__marker {
         width: 10px;
         height: 10px;
@@ -33,15 +63,19 @@ const props = defineProps(['priority']);
     }
 
     &__red {
-        background: #ff7a66;
+        background: #FF4242;
     }
 
-    &__yellow {
-        background: #faf87d;
+    &__orange {
+        background: #FF8900;
     }
 
     &__green {
-        background: #0fff83;
+        background: #5DE1C4;
+    }
+
+    &__blue {
+        background: #2962E8;
     }
 
 

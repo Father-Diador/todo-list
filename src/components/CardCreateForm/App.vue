@@ -50,9 +50,10 @@
           class="form__input-pos__input"
         >
           <option value="">Выберите</option>
-          <option value="1">Высокий</option>
-          <option value="2">Средний</option>
-          <option value="3">Низкий</option>
+          <option value="1">Высший</option>
+          <option value="2">Срочный</option>
+          <option value="3">Высокий</option>
+          <option value="4">Нормальный</option>
       </select>
       </div>
 

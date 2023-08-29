@@ -1,13 +1,11 @@
 <template>
   <div class="cards__wrapper">
-
     В работе
     <SingleCard 
       v-for="card in sortedArray" 
       :key="card.id"
       :card="card"
     />
-
   </div>
 </template>
 

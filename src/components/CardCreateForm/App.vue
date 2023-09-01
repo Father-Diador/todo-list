@@ -50,23 +50,12 @@
           class="form__input-pos__input"
         >
           <option value="">Выберите</option>
-          <option value="1">Высший</option>
+          <option value="1">Высокий</option>
           <option value="2">Срочный</option>
-          <option value="3">Высокий</option>
-          <option value="4">Нормальный</option>
+          <option value="3">Нормальный</option>
+          <option value="4">Низкий</option>
       </select>
       </div>
-
-      <!-- <div v-if="selectOptions.length" class="form__input-pos">
-        <label class="form__input-pos__label" for="">
-          Привязка к карточке
-        </label>
-        <CardSelect 
-          :selectOptions="selectOptions"
-          v-model="card.selectedCard"
-          class="form__input-pos__input"
-        />
-      </div> -->
       
       <span class="btn-default" @click="addCard">Создать</span>
 
@@ -75,7 +64,6 @@
 </template>
 
 <script setup>
-import CardSelect from '@/components/CardCreateForm/CardSelect.vue'
 import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
 import { reactive } from "vue";
@@ -99,8 +87,6 @@ let card = reactive({
   date: '',
 });
 
-const props = defineProps(['selectOptions']);
-
 const addCard = () => {
   if (card.title !== '' && card.description !== '') {
 
@@ -113,7 +99,7 @@ const addCard = () => {
     card.date = today;
 
     if (card.priority == '') {
-      card.priority = '3';
+      card.priority = '4';
     }
     cardPush(card);
 

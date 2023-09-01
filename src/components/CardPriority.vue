@@ -5,7 +5,7 @@
             class="priority__wrapper"
         >
             <div class="priority__marker priority__red"></div>
-            <span>Высший</span>
+            <span>Высокий</span>
         </div>
         <div
             v-if="priority === '2'"
@@ -18,15 +18,15 @@
             v-if="priority === '3'"
             class="priority__wrapper"
         >
-            <div class="priority__marker priority__green"></div>
-            <span>Высокий</span>
+            <div class="priority__marker priority__blue"></div>
+            <span>Нормальный</span>
         </div>
         <div
             v-if="priority === '4'"
             class="priority__wrapper"
         >
-            <div class="priority__marker priority__blue"></div>
-            <span>Нормальный</span>
+            <div class="priority__marker priority__green"></div>
+            <span>Низкий</span>
         </div>
     </div>
 </template>

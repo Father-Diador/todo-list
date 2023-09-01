@@ -3,15 +3,21 @@
         <SideBar />
         <CardForm
             v-if="isOpen"
-            @create="addCard"
             :selectOptions="selectOptions"
         />
-        <CardList :cards="cards" />
+        <CardList />
         <DashBoard />
     </div>
 </template>
   
 <script setup>
+import { useCards } from "@/stores/useCards";
+const cardsStore = useCards();
+const { selectedOptions, cards, setCardFromStorage, setOptionFromStorage } = cardsStore;
+const cardPush = (value) => { setCardFromStorage(value) };
+const optionsPush = (value) => { setOptionFromStorage(value) };
+
+
 import CardForm from '@/components/CardCreateForm/App.vue'
 import CardList from '@/components/CardList.vue'
 import SideBar from '@/components/SideBar.vue'
@@ -23,55 +29,58 @@ import { useMenu } from "@/stores/useMenu";
 const menuStore = useMenu();
 const { isOpen } = storeToRefs(menuStore);
 
-let cards = reactive([]);
+// let cards = reactive([]);
 
-let selectOptions = reactive([]);
+// let selectOptions = reactive([]);
 
-const findById = (tree, nodeId) => {
-  console.log(tree);
-  for (let node of tree) {
-    console.log(node.id + ": " + nodeId);
-      if (node.id === nodeId) return node
-      let subordinates = node.subordinates;
-      if (!subordinates) continue;
-      if (subordinates.length > 0) {
-        let desiredNode = findById(subordinates, nodeId)
-        if (desiredNode) return desiredNode
-      } else {
-        return;
-      }
-  }
-  return false
-};
+// const findById = (tree, nodeId) => {
+//   console.log(tree);
+//   for (let node of tree) {
+//     console.log(node.id + ": " + nodeId);
+//       if (node.id === nodeId) return node
+//       let subordinates = node.subordinates;
+//       if (!subordinates) continue;
+//       if (subordinates.length > 0) {
+//         let desiredNode = findById(subordinates, nodeId)
+//         if (desiredNode) return desiredNode
+//       } else {
+//         return;
+//       }
+//   }
+//   return false
+// };
 
-const addCard = (card) => {
-  if (card.selectedCard != '') {
-      console.log('PUSH 1');
-      console.log(card.selectedCard);
-      let head = findById(cards, Number(card.selectedCard));
-      if (!head) {
-        console.error("head not found: " + card.selectedCard);
-        return;
-      }
-      head.subordinates.push(card);
-  }
-  else {
-    console.log('ПУШ 2');
-    cards.push(card);
-  }
+// const addCard = (card) => {
+//   if (card.selectedCard != '') {
+//       console.log('PUSH 1');
+//       console.log(card.selectedCard);
+//       let head = findById(cards, Number(card.selectedCard));
+//       if (!head) {
+//         console.error("head not found: " + card.selectedCard);
+//         return;
+//       }
+//       head.subordinates.push(card);
+//   }
+//   else {
+//     console.log('ПУШ 2');
+//     cards.push(card);
+//   }
     
-  selectOptions.push(card); 
-  localStorage.setItem("cards", JSON.stringify(cards));
-  localStorage.setItem("selectOptions", JSON.stringify(selectOptions));
-};
+//   selectOptions.push(card); 
+//   localStorage.setItem("cards", JSON.stringify(cards));
+//   localStorage.setItem("selectOptions", JSON.stringify(selectOptions));
+// };
 
 onBeforeMount(() => {
-  if (!JSON.parse(localStorage.getItem('cards'))) {
-    localStorage.setItem("cards", JSON.stringify(cards));
-    localStorage.setItem("selectOptions", JSON.stringify(selectOptions));
+  if (!JSON.parse(localStorage.getItem('allCards'))) {
+    console.log(111);
+    localStorage.setItem("allCards", JSON.stringify(cards));
+    localStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
   } else {
-    cards = JSON.parse(localStorage.getItem('cards'));
-    selectOptions = JSON.parse(localStorage.getItem('selectOptions'));
+    console.log(222);
+    cardPush(JSON.parse(localStorage.getItem('allCards')));
+    optionsPush(JSON.parse(localStorage.getItem('selectedOptions')))
+    
   }
 });
 </script>

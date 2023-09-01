@@ -2,7 +2,7 @@
   <div class="cards__wrapper">
     В работе
     <SingleCard 
-      v-for="card in sortedArray" 
+      v-for="card in cards" 
       :key="card.id"
       :card="card"
     />
@@ -11,23 +11,25 @@
 
 <script setup>
 import SingleCard from '@/components/SingleCard.vue'
-import { computed } from "vue";
 import { useMenu } from "@/stores/useMenu";
+import { useCards } from "@/stores/useCards";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 
 const menuStore = useMenu();
-const { sort } = menuStore;
+const { sort } = storeToRefs(menuStore);
+
+const cardsStore = useCards();
+const { cards } = storeToRefs(cardsStore);
+
+console.log(cards);
 
 const getSort = computed(() => {
-  console.log(sort);
   return sort;
 });
 
-console.log(sort);
-
-const props = defineProps(['cards']);
-
 const sortedArray = computed(() => {
-  return [...props.cards].sort((card1, card2) => (card1[getSort] > card2[getSort]) ? 1 : -1);
+  return [...cards].sort((card1, card2) => (card1[getSort()] > card2[getSort()]) ? 1 : -1);
 });
 </script>
 

@@ -57,7 +57,7 @@
       </select>
       </div>
 
-      <div v-if="selectOptions.length" class="form__input-pos">
+      <!-- <div v-if="selectOptions.length" class="form__input-pos">
         <label class="form__input-pos__label" for="">
           Привязка к карточке
         </label>
@@ -66,7 +66,7 @@
           v-model="card.selectedCard"
           class="form__input-pos__input"
         />
-      </div>
+      </div> -->
       
       <span class="btn-default" @click="addCard">Создать</span>
 
@@ -77,11 +77,18 @@
 <script setup>
 import CardSelect from '@/components/CardCreateForm/CardSelect.vue'
 import { useMenu } from "@/stores/useMenu";
+import { useCards } from "@/stores/useCards";
 import { reactive } from "vue";
 
+//стор на открытие меню
 const menuStore = useMenu();
 const { toggle } = menuStore;
 const toggleMenu = () => { toggle() };
+
+//стор на создание карт
+const cardsStore = useCards();
+const { setCard } = cardsStore;
+const cardPush = (value) => { setCard(value) };
 
 let card = reactive({
   priority: '',
@@ -93,26 +100,23 @@ let card = reactive({
 });
 
 const props = defineProps(['selectOptions']);
-const emit = defineEmits(['create']);
-
-console.log(props.selectOptions);
 
 const addCard = () => {
   if (card.title !== '' && card.description !== '') {
+
     card.id = Date.now();
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, '0');
     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
     today = mm + '.' + dd + '.' + yyyy;
-
     card.date = today;
 
     if (card.priority == '') {
       card.priority = '3';
     }
-    emit('create', card)
-    console.log(card);
+    cardPush(card);
+
     card = {};
     toggleMenu();
   } else {

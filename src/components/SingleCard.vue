@@ -8,6 +8,7 @@
 
           <div class="card__content__priority">
             <CardPriority :priority="card.priority" />
+            <div class="card__content__add-btn" @click="setChildCard">+</div>
             <div
               v-if="card.subordinates.length"
               @click.stop="isVissible = !isVissible"
@@ -30,10 +31,15 @@
 
 <script setup>
 import CardPriority from "@/components/CardPriority.vue"
+import { useMenu } from "@/stores/useMenu";
 import { ref } from "vue";
 
 const isVissible = ref(false);
 const props = defineProps(['card']);
+
+const menuStore = useMenu();
+const { toggle } = menuStore;
+const setChildCard = () => { toggle() };
 </script>
 
 <style scoped lang="scss">
@@ -73,6 +79,23 @@ const props = defineProps(['card']);
       align-items: center;
       justify-content: flex-end;
       gap: 20px;
+    }
+
+    &__add-btn {
+      cursor: pointer;
+      width: 60px;
+      height: 30px;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 7px;
+      background: $accent;
+      color: $white;
+
+      &:hover {
+        background: $accent-hover;
+      }
     }
 
     &__chevron {

@@ -42,6 +42,22 @@
       </div>
 
       <div class="form__input-pos">
+        <label
+          class="form__input-pos__label"
+          for="end"
+        >
+          Окончание
+        </label>
+        <input 
+          name="end" 
+          type="date" 
+          v-model="card.end_date"
+          placeholder="Добавьте описание"
+          class="form__input-pos__input"
+        >
+      </div>
+
+      <div class="form__input-pos">
         <label class="form__input-pos__label" for="">
           Приоритет
         </label>
@@ -50,11 +66,42 @@
           class="form__input-pos__input"
         >
           <option value="">Выберите</option>
-          <option value="1">Высокий</option>
-          <option value="2">Срочный</option>
+          <option value="1">Срочный</option>
+          <option value="2">Высокий</option>
           <option value="3">Нормальный</option>
           <option value="4">Низкий</option>
       </select>
+      </div>
+
+      <div class="form__input-pos">
+        <label
+          class="form__input-pos__label"
+          for="tags"
+        >
+          Тэги
+        </label>
+        <div class="form__add-tags">
+          <input 
+            name="tags" 
+            type="text" 
+            v-model="tagTitle"
+            placeholder="Добавьте описание"
+            class="form__add-tags__input"
+          >
+          <button
+            class="form__add-tags__btn"
+            @click="addTag"
+          >+</button>
+        </div>
+        <div class="form__add-tags__tags">
+            <span
+              v-for="tag in card.tags"
+              :key="tag"
+              class="form__add-tags__tag"
+            >
+              {{ tag.title }}
+            </span>
+          </div>
       </div>
       
       <span class="btn-default" @click="addCard">Создать</span>
@@ -66,7 +113,7 @@
 <script setup>
 import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 //стор на открытие меню
 const menuStore = useMenu();
@@ -84,7 +131,15 @@ let card = reactive({
   description: '',
   selectedCard: '',
   subordinates: [],
+  tags: [],
   date: '',
+});
+
+const tagTitle = ref();
+
+const tag = reactive({
+  id: '',
+  title: '',
 });
 
 const addCard = () => {
@@ -93,7 +148,7 @@ const addCard = () => {
     card.id = Date.now();
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
     let yyyy = today.getFullYear();
     today = mm + '.' + dd + '.' + yyyy;
     card.date = today;
@@ -109,6 +164,15 @@ const addCard = () => {
      alert('Ошибка! Поля не заполнены!')
   }
 };
+
+const addTag = () => {
+  console.log(tagTitle.value);
+  tag.id = Date.now();
+  tag.title = tagTitle.value;
+  card.tags.push(tag);
+  console.log(card);
+  tagTitle.value = null;
+};
 </script>
 
 <style scoped lang="scss">
@@ -122,6 +186,53 @@ const addCard = () => {
   border-radius: 10px;
   background: $white;
   gap: 30px;
+
+  &__add-tags {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 20px;
+
+    &__input {
+      width: 30%;
+      padding: 15px 10px;
+      border: 1px solid #dbdbdb;
+      border-radius: 10px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    &__btn {
+      cursor: pointer;
+      border-radius: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: $accent;
+      color: $white;
+
+      &:hover {
+        background: $accent-hover;
+      }
+    }
+
+    &__tags {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    &__tag {
+      padding: 5px 10px;
+      background: $light-gray;
+      color: $gray;
+      text-transform: uppercase;
+      border-radius: 5px;
+    }
+  }
 
   &__overlay {
     position: fixed;

@@ -1,21 +1,40 @@
 <template>
-  <div class="card">
+  <div class="card" @click.stop="openCard">
       <div class="card__wrapper">
-        <div class="card__content">
-          <p>{{ card.title }}</p>
-          <p>{{ card.description }}</p>
-          <p>{{ card.date }}</p>
-
-          <div class="card__content__priority">
-            <CardPriority :priority="card.priority" />
-            <div class="card__content__add-btn" @click="setChildCard(card.id)">+</div>
-            <div
-              v-if="card.subordinates.length"
-              @click.stop="isVissible = !isVissible"
-              class="card__content__chevron"
-            >▼</div>
+        <div class="card__content card-small">
+          <div class="card__content__upper">
+            <span class="card__content__title">{{ card.title }}</span>
+            <div class="card__content__utils">
+              <CardPriority :priority="card.priority" />
+              <div class="card__content__add-btn" @click.stop="setChildCard(card.id)">+</div>
+              <div
+                v-if="card.subordinates.length"
+                @click.stop="isVissible = !isVissible"
+                class="card__content__chevron"
+              >▼</div>
+            </div>
           </div>
-
+          <div class="card__content__lower">
+            <div class="card__content__lower__left">
+              <div class="card__content__label-info">
+                <span>Начало:</span>
+                <span>{{ card.date }}</span>
+              </div>
+              <div class="card__content__label-info">
+                <span>Окончание:</span>
+                <span>{{ card.end_date }}</span>
+              </div>
+            </div>
+            <div class="card__content__lower__right">
+              <span
+                v-for="tag in card.tags"
+                :key="tag"
+                class="card__content__tag"
+              >
+                {{ tag.title }}
+              </span>
+            </div>
+          </div>
         </div>
         <div v-if="isVissible" class="card__child">
           <SingleCard
@@ -44,6 +63,20 @@ const { toggle } = menuStore;
 const cardsStore = useCards();
 const { setSelectedCard } = cardsStore;
 
+// const heightValue = ref(false);
+
+// const openCard = () => {
+//   let elem = document.querySelector('#card');
+//   if (heightValue.value === false) {
+//     elem.classList.remove("card-small");
+//     console.log(1);
+//   } else {
+//     elem.classList.add("card-small");
+//     console.log(2);
+//   }
+//   heightValue.value = !heightValue.value;
+// };
+
 const setChildCard = (value) => {
   setSelectedCard(value);
   toggle();
@@ -68,20 +101,90 @@ const setChildCard = (value) => {
   }
 
   &__content {
-    height: 52px;
+    overflow: hidden;
+    cursor: pointer;
     background: $white;
     width: 100%;
     padding: 10px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     border-radius: 10px;
-    -webkit-box-shadow: 0px 4px 18px -7px rgba(34, 60, 80, 0.2);
-    -moz-box-shadow: 0px 4px 18px -7px rgba(34, 60, 80, 0.2);
-    box-shadow: 0px 4px 18px -7px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.08);
 
-    &__priority {
+    &__upper {
+      min-height: 52px;
+      gap: 2.5px;
+      width: 100%;
+      // min-height: 30px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid $line;
+    }
+
+    &__lower {
+      padding-top: 10px;
+      min-height: 30px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 20px;
+
+      &__left {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 20px 10px 0;
+        border-right: 1px solid $line;
+      }
+
+      &__right {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+    }
+
+    &__tag {
+      padding: 5px 10px;
+      background: $accent;
+      color: $white;
+      text-transform: uppercase;
+      border-radius: 5px;
+    }
+
+    &__label-info {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      color: $third-color;
+      font-weight: 600;
+      // font-size: 14px;
+    }
+
+    &__title {
+      width: 65%;
+      font-size: 15px;
+      color: $third-color;
+      font-weight: 600;
+      line-height: 30px;
+    }
+
+    // &__date {
+    //   width: 20%;
+    //   line-height: 30px;
+    // }
+
+    &__utils {
+      max-width: 30%;
+      width: 30%;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -144,4 +247,9 @@ const setChildCard = (value) => {
     }
   }
 }
+
+// .card-small {
+//   height: 52px;
+//   overflow: hidden;
+// }
 </style>

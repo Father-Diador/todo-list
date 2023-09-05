@@ -1,8 +1,8 @@
 <template>
   <div class="cards__wrapper">
-    В работе
+    В работе:
     <SingleCard 
-      v-for="card in cards" 
+      v-for="card in sortedArray" 
       :key="card.id"
       :card="card"
     />
@@ -22,14 +22,13 @@ const { sort } = storeToRefs(menuStore);
 const cardsStore = useCards();
 const { cards } = storeToRefs(cardsStore);
 
-console.log(cards);
-
 const getSort = computed(() => {
+  console.log(sort);
   return sort;
 });
 
 const sortedArray = computed(() => {
-  return [...cards].sort((card1, card2) => (card1[getSort()] > card2[getSort()]) ? 1 : -1);
+  return [...cards.value].sort((card1, card2) => (card1['priority'] > card2['priority']) ? 1 : -1);
 });
 </script>
 

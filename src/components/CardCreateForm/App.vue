@@ -51,7 +51,7 @@
         <input 
           name="end" 
           type="date" 
-          v-model="card.end_date"
+          v-model="card.endDate"
           placeholder="Добавьте описание"
           class="form__input-pos__input"
         >
@@ -133,6 +133,7 @@ let card = reactive({
   subordinates: [],
   tags: [],
   date: '',
+  endDate: '',
 });
 
 const tagTitle = ref();
@@ -146,16 +147,26 @@ const addCard = () => {
   if (card.title !== '' && card.description !== '') {
 
     card.id = Date.now();
+
     let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0');
-    let yyyy = today.getFullYear();
-    today = mm + '.' + dd + '.' + yyyy;
+    let day = String(today.getDate()).padStart(2, '0');
+    let month = String(today.getMonth() + 1).padStart(2, '0');
+    let year = today.getFullYear();
+    today = year + '-' + month + '-' + day;
     card.date = today;
 
     if (card.priority == '') {
       card.priority = '4';
     }
+
+    if (!card.tags.length) {
+      card.tags.push({title: 'Тэги не выбраны', value: 0});
+    }
+
+    if (!card.endDate.length) {
+      card.endDate = 'Не выбрано';
+    }
+
     cardPush(card);
 
     card = {};
@@ -169,6 +180,7 @@ const addTag = () => {
   console.log(tagTitle.value);
   tag.id = Date.now();
   tag.title = tagTitle.value;
+  tag.value = 1;
   card.tags.push(tag);
   console.log(card);
   tagTitle.value = null;

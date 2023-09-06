@@ -4,6 +4,7 @@
         <div class="card__content card-small">
           <div class="card__content__upper">
             <span class="card__content__title">{{ card.title }}</span>
+            <!-- <icon name="danger"></icon> -->
             <div class="card__content__utils">
               <CardPriority :priority="card.priority" />
               <div class="card__content__add-btn" @click.stop="setChildCard(card.id)">+</div>
@@ -22,16 +23,26 @@
               </div>
               <div class="card__content__label-info">
                 <span>Окончание:</span>
-                <span>{{ card.end_date }}</span>
+                <span>{{ card.endDate }}</span>
               </div>
             </div>
             <div class="card__content__lower__right">
               <span
                 v-for="tag in card.tags"
                 :key="tag"
-                class="card__content__tag"
               >
-                {{ tag.title }}
+                <span
+                  v-if="tag.value === 0"
+                  class="card__content__empty-tag"
+                >
+                  {{ tag.title }}
+                </span>
+                <span
+                  class="card__content__tag"
+                  v-else
+                >
+                  {{ tag.title }}
+                </span>
               </span>
             </div>
           </div>
@@ -49,6 +60,7 @@
 </template>
 
 <script setup>
+import Icon from "@/components/shared/SvgIcon.vue"
 import CardPriority from "@/components/CardPriority.vue"
 import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
@@ -154,6 +166,14 @@ const setChildCard = (value) => {
       padding: 5px 10px;
       background: $accent;
       color: $white;
+      text-transform: uppercase;
+      border-radius: 5px;
+    }
+
+    &__empty-tag {
+      padding: 5px 10px;
+      background: $light-gray;
+      color: $gray;
       text-transform: uppercase;
       border-radius: 5px;
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="right__wrapper">
-        <div>222</div>
+        <div></div>
         <div class="right__wrapper__rights">version 0.2</div>
     </div>
 </template>
@@ -11,7 +11,7 @@
     max-width: 20%;
     width: 20%;
     height: 100vh;
-    padding: 50px 40px;
+    padding: 50px 40px 20px;
     background: $white;
     display: flex;
     flex-direction: column;

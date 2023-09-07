@@ -1,21 +1,65 @@
 <template>
-  <div class="card" @click.stop="openCard">
+  <div class="card">
       <div class="card__wrapper">
-        <div class="card__content card-small">
+        <div class="card__content" @click.stop="openCard">
           <div class="card__content__upper">
+            <CardStatus v-if="card.status" :card="card" />
             <span class="card__content__title">{{ card.title }}</span>
-            <!-- <icon name="danger"></icon> -->
             <div class="card__content__utils">
               <CardPriority :priority="card.priority" />
-              <div class="card__content__add-btn" @click.stop="setChildCard(card.id)">+</div>
+              <div
+                class="card__menu"
+                @mouseover.stop="toggleCardMenu"
+                @mouseout.stop="toggleCardMenu"
+                @click.stop
+              >
+                <div
+                  class="card__menu__add-btn"
+                  :style="{ borderRadius:menuRadius }"
+                >
+                  <img class="svg-icon" src="@/assets/icons/settings.svg" alt="" :style="{  transform: menuChevron }">
+                </div>
+                <div class="card__menu__link" :style="{ display: menu }">
+                  <div
+                    class="card__menu__link-content"
+                    @click.stop="setChildCard(card.id)"
+                  >
+                    <img class="svg-icon" src="@/assets/icons/add.svg" alt="">
+                  </div>
+                  <div
+                    class="card__menu__link-content"
+                    @click.stop="editCard(card.id)"
+                  >
+                    <img class="svg-icon" src="@/assets/icons/edit.svg" alt="">
+                  </div>
+                  <div
+                    class="card__menu__link-content"
+                    @click.stop="deleteCard(card.id)"
+                  >
+                    <img class="svg-icon" src="@/assets/icons/delete.svg" alt="">
+                  </div>
+                  <div
+                    class="card__menu__link-content"
+                    @click.stop="cardStatus"
+                  >
+                    <img
+                      class="svg-icon"
+                      src="@/assets/icons/done.svg"
+                      alt="Добавить"
+                    >
+                  </div>
+                </div>
+              </div>
               <div
                 v-if="card.subordinates.length"
-                @click.stop="isVissible = !isVissible"
+                @click.stop="toogleChildCards"
                 class="card__content__chevron"
-              >▼</div>
+              >
+                <img class="svg-icon" src="@/assets/icons/down.svg" alt="" :style="{  transform: menuChevronTwo }">
+              </div>
             </div>
           </div>
-          <div class="card__content__lower">
+          <div class="card__content__lower" :style="{ display: displayValue }">
             <div class="card__content__lower__left">
               <div class="card__content__label-info">
                 <span>Начало:</span>
@@ -61,13 +105,35 @@
 
 <script setup>
 import Icon from "@/components/shared/SvgIcon.vue"
+import CardStatus from "@/components/CardStatus.vue"
 import CardPriority from "@/components/CardPriority.vue"
 import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
 import { ref } from "vue";
 
-const isVissible = ref(false);
 const props = defineProps(['card']);
+
+const displayValue = ref('none');
+
+const openCard = () => {
+  if (displayValue.value == 'none') {
+    displayValue.value = 'flex';
+  } else {
+    displayValue.value = 'none';
+  }
+}
+
+const isVissible = ref(false);
+const menuChevronTwo = ref('rotate(0)');
+
+const toogleChildCards = () => {
+  isVissible.value = !isVissible.value;
+  if(isVissible.value) {
+    menuChevronTwo.value = 'rotate(180deg)';
+  } else {
+    menuChevronTwo.value = 'rotate(0)';
+  }
+}
 
 const menuStore = useMenu();
 const { toggle } = menuStore;
@@ -75,24 +141,42 @@ const { toggle } = menuStore;
 const cardsStore = useCards();
 const { setSelectedCard } = cardsStore;
 
-// const heightValue = ref(false);
+const menu = ref('none');
+const menuRadius = ref('7px');
+const menuChevron = ref('rotate(0)');
 
-// const openCard = () => {
-//   let elem = document.querySelector('#card');
-//   if (heightValue.value === false) {
-//     elem.classList.remove("card-small");
-//     console.log(1);
-//   } else {
-//     elem.classList.add("card-small");
-//     console.log(2);
-//   }
-//   heightValue.value = !heightValue.value;
-// };
+const toggleCardMenu = () => {
+  if (menu.value === 'none') {
+    menu.value = 'flex';
+    menuRadius.value = '7px 7px 0 0';
+    menuChevron.value = 'rotate(180deg)';
+  } else {
+    menu.value = 'none';
+    menuRadius.value = '7px';
+    menuChevron.value= 'rotate(0)';
+  }
+};
 
-const setChildCard = (value) => {
-  setSelectedCard(value);
+const cardStatus = () => {
+  if (card.status === 1) {
+    card.status = 2;
+  } else {
+    card.status = 1;
+  }
+};
+
+const setChildCard = (id) => {
+  setSelectedCard(id);
   toggle();
-  };
+};
+
+const editCard = (id) => {
+  console.log(id);
+};
+
+const deleteCard = (id) => {
+  console.log(id);
+};
 </script>
 
 <style scoped lang="scss">
@@ -112,11 +196,62 @@ const setChildCard = (value) => {
     border-radius: 10px;
   }
 
+  &__menu {
+      position: relative;
+
+      &__add-btn {
+        cursor: pointer;
+        width: 60px;
+        height: 40px;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $accent;
+        color: $white;
+        transition: 0.3s;
+
+        &:hover {
+          background: $accent-hover;
+        }
+      }
+
+      &__link {
+        z-index: 9;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 40px;
+        left: 0;
+
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 0 7px 7px;
+        overflow: hidden;
+
+        &-content {
+          width: 60px;
+          height: 40px;
+          font-size: 15px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: $light-gray;
+          transition: 0.3s;
+
+          &:hover {
+            background: #89a8f0;
+          }
+        }
+      }
+  }
+
   &__content {
-    overflow: hidden;
     cursor: pointer;
     background: $white;
     width: 100%;
+    gap: 10px;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -132,14 +267,13 @@ const setChildCard = (value) => {
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 15px;
-      border-bottom: 1px solid $line;
+      // padding-bottom: 15px;
     }
 
     &__lower {
+      border-top: 1px solid $line;
       padding-top: 10px;
       min-height: 30px;
-      display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
@@ -189,18 +323,27 @@ const setChildCard = (value) => {
       // font-size: 14px;
     }
 
+    &__status {
+      width: 10%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid $line;
+      height: 100%;
+    }
+
     &__title {
-      width: 65%;
-      font-size: 15px;
+      width: 55%;
+      font-size: 18px;
       color: $third-color;
       font-weight: 600;
       line-height: 30px;
+      word-break: break-all;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
     }
-
-    // &__date {
-    //   width: 20%;
-    //   line-height: 30px;
-    // }
 
     &__utils {
       max-width: 30%;
@@ -210,23 +353,6 @@ const setChildCard = (value) => {
       align-items: center;
       justify-content: flex-end;
       gap: 20px;
-    }
-
-    &__add-btn {
-      cursor: pointer;
-      width: 60px;
-      height: 30px;
-      font-size: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 7px;
-      background: $accent;
-      color: $white;
-
-      &:hover {
-        background: $accent-hover;
-      }
     }
 
     &__chevron {
@@ -267,9 +393,4 @@ const setChildCard = (value) => {
     }
   }
 }
-
-// .card-small {
-//   height: 52px;
-//   overflow: hidden;
-// }
 </style>

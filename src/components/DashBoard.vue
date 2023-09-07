@@ -1,9 +1,15 @@
 <template>
     <div class="right__wrapper">
-        <div></div>
+        <div class="btn-default" @click="del">Удалить заявки</div>
         <div class="right__wrapper__rights">version 0.2</div>
     </div>
 </template>
+
+<script setup>
+const del = () => {
+    localStorage.clear();
+}
+</script>
 
 <style scoped lang="scss">
 .right__wrapper {

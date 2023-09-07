@@ -7,6 +7,7 @@ export const useCards = defineStore('cards', () => {
   const selectedCard = ref(null);
   const selectedOptions = ref([]);
 
+  // Поиск в массиве карточек
   const findById = (tree, nodeId) => {
     console.log(tree);
     for (let node of tree) {
@@ -24,6 +25,7 @@ export const useCards = defineStore('cards', () => {
     return false
   };
 
+  // Добавление карточки
   const setCard = (card) => {
     if(selectedCard.value) {
       card.selectedCard = selectedCard.value;
@@ -39,14 +41,12 @@ export const useCards = defineStore('cards', () => {
       head.subordinates.push(card);
     }
     else {
+      card.status = 1;
       console.log('ПУШ 2');
       cards.value.push(card);
     }
-
     selectedCard.value = null;
-          
     selectedOptions.value.push(card);
-
     localStorage.setItem("allCards", JSON.stringify(cards.value));
     localStorage.setItem("selectedOptions", JSON.stringify(selectedOptions.value));
   };

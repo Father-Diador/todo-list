@@ -72,7 +72,9 @@
           <option value="4">Низкий</option>
       </select>
       </div>
-
+      <div>
+        <input type="checkbox">
+      </div>
       <div class="form__input-pos">
         <label
           class="form__input-pos__label"

@@ -2,10 +2,10 @@
     <div class="sidebar__wrapper">
         <img src="/public/logo.svg" class="sidebar__logo" alt="">
         <div class="sidebar__btn sidebar__btn__active">Сегодня</div>
-        <div class="sidebar__btn" >В работе</div>
-        <div class="sidebar__btn" >Готовые</div>
+        <div class="sidebar__btn">В работе</div>
+        <div class="sidebar__btn">Готовые</div>
         <div class="sidebar__btn" @click="sort('priority')">По приоритету</div>
-        <div class="sidebar__btn" >Проекты</div>
+        <div class="sidebar__btn">Проекты</div>
         <div class="btn-default sidebar__add" @click="toggleMenu">
             <span class="btn-default__plus">+</span>
             <span>Добавить</span>

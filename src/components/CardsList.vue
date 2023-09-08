@@ -3,7 +3,7 @@
     <div class="cards__upper">
       <span class="cards__title">В работе</span>
       <SingleCard 
-        v-for="card in sortedArray" 
+        v-for="card in activeCards" 
         :key="card.id"
         :card="card"
       />
@@ -11,7 +11,7 @@
     <div class="cards__lower">
       <span class="cards__title">Готовые</span>
       <SingleCard 
-        v-for="card in sortedArray" 
+        v-for="card in inactiveCards" 
         :key="card.id"
         :card="card"
       />
@@ -32,14 +32,28 @@ const { sort } = storeToRefs(menuStore);
 const cardsStore = useCards();
 const { cards } = storeToRefs(cardsStore);
 
-const getSort = computed(() => {
-  console.log(sort);
-  return sort;
-});
+const activeCards = cards.value.reduce((list, current) => {
+  if (current.status === 1) {
+    list.push(current)
+  }
+  return list
+}, []);
 
-const sortedArray = computed(() => {
-  return [...cards.value].sort((card1, card2) => (card1['priority'] > card2['priority']) ? 1 : -1);
-});
+const inactiveCards = cards.value.reduce((list, current) => {
+  if (current.status === 0) {
+    list.push(current)
+  }
+  return list
+}, []);
+
+// const getSort = computed(() => {
+//   console.log(sort);
+//   return sort;
+// });
+
+// const sortedArray = computed(() => {
+//   return [...cards.value].sort((card1, card2) => (card1['priority'] > card2['priority']) ? 1 : -1);
+// });
 </script>
 
 <style lang="scss" scoped>
@@ -52,8 +66,8 @@ const sortedArray = computed(() => {
   align-items: flex-start;
 
   &__title {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 500;
   }
 
   &__upper {

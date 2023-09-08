@@ -6,7 +6,7 @@
     >
       <span @click="toggleMenu" class="form__cancel-btn">×</span>
       <div class="form__title">
-        <h4>Добавить карточку</h4>   
+        <h4>Создать карточку</h4>   
       </div>
 
       <div class="form__input-pos">
@@ -56,7 +56,6 @@
           class="form__input-pos__input"
         >
       </div>
-
       <div class="form__input-pos">
         <label class="form__input-pos__label" for="">
           Приоритет
@@ -70,44 +69,71 @@
           <option value="2">Высокий</option>
           <option value="3">Нормальный</option>
           <option value="4">Низкий</option>
-      </select>
+        </select>
       </div>
-      <div>
-        <input type="checkbox">
-      </div>
-      <div class="form__input-pos">
-        <label
-          class="form__input-pos__label"
-          for="tags"
-        >
-          Тэги
-        </label>
-        <div class="form__add-tags">
-          <input 
-            name="tags" 
-            type="text" 
-            v-model="tagTitle"
-            placeholder="Добавьте описание"
-            class="form__add-tags__input"
-          >
-          <button
-            class="form__add-tags__btn"
-            @click="addTag"
-          >+</button>
-        </div>
-        <div class="form__add-tags__tags">
-            <span
-              v-for="tag in card.tags"
-              :key="tag"
-              class="form__add-tags__tag"
-            >
-              {{ tag.title }}
-            </span>
+      <div class="form__tags">
+        <div class="form__tags__block">
+          <div class="form__tags__checkbox">
+            <input type="checkbox" v-model="tags">
+            <span>Добавить тэг</span>
           </div>
+          <div class="form__input-pos" v-if="tags">
+            <div class="form__add-tags">
+              <input 
+                name="tags" 
+                type="text" 
+                v-model="tag.title"
+                placeholder="Добавьте тэг"
+                class="form__add-tags__input"
+              >
+              <button
+                class="form__add-tags__btn"
+                @click="addTag"
+              >+</button>
+            </div>
+            <div class="form__add-tags__tags">
+              <span
+                v-for="tag in card.tags"
+                :key="tag"
+                class="form__add-tags__tag"
+              >
+                {{ tag.title }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="form__tags__block">
+          <div class="form__tags__checkbox">
+            <input type="checkbox" v-model="posts">
+            <span>Добавить человека</span>
+          </div>
+          <div class="form__input-pos" v-if="posts">
+            <div class="form__add-tags">
+              <input 
+                name="tags" 
+                type="text" 
+                v-model="post.title"
+                placeholder="Добавьте должность"
+                class="form__add-tags__input"
+              >
+              <button
+                class="form__add-tags__btn"
+                @click="addPost"
+              >+</button>
+            </div>
+            <div class="form__add-tags__tags">
+              <span
+                v-for="post in card.posts"
+                :key="post"
+                class="form__add-tags__tag"
+              >
+                {{ post.title }}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
-      
       <span class="btn-default" @click="addCard">Создать</span>
-
     </div>
   </div>
 </template>
@@ -134,15 +160,25 @@ let card = reactive({
   selectedCard: '',
   subordinates: [],
   tags: [],
+  posts: [],
   date: '',
   endDate: '',
 });
 
+const tags = ref(false);
 const tagTitle = ref();
-
 const tag = reactive({
   id: '',
   title: '',
+  color: '#ffb899',
+});
+
+const posts = ref(false);
+const postTitle = ref();
+const post = reactive({
+  id: '',
+  title: '',
+  color: '#00db6a',
 });
 
 const addCard = () => {
@@ -150,6 +186,7 @@ const addCard = () => {
 
     card.id = Date.now();
 
+    // получение текущей даты
     let today = new Date();
     let day = String(today.getDate()).padStart(2, '0');
     let month = String(today.getMonth() + 1).padStart(2, '0');
@@ -157,20 +194,24 @@ const addCard = () => {
     today = year + '-' + month + '-' + day;
     card.date = today;
 
+    // автозаполнение приоритета
     if (card.priority == '') {
       card.priority = '4';
     }
 
-    if (!card.tags.length) {
-      card.tags.push({title: 'Тэги не выбраны', value: 0});
-    }
+    // if (!card.tags.length) {
+    //   card.tags.push({title: 'Тэги не выбраны', value: 0});
+    // }
 
+    // автозаполнение даты окончания
     if (!card.endDate.length) {
       card.endDate = 'Не выбрано';
     }
 
+    // пуш в массив с карточками
     cardPush(card);
-
+    
+    // очистка полей
     card = {};
     toggleMenu();
   } else {
@@ -178,18 +219,22 @@ const addCard = () => {
   }
 };
 
+// добавление тега
 const addTag = () => {
-  console.log(tagTitle.value);
   tag.id = Date.now();
-  tag.title = tagTitle.value;
-  tag.value = 1;
-  card.tags.push(tag);
-  console.log(card);
-  tagTitle.value = null;
+  card.tags.push(JSON.parse(JSON.stringify(tag)));
+  tag.title =  '';
+};
+
+// добавление должности
+const addPost = () => {
+  post.id = Date.now();
+  card.posts.push(JSON.parse(JSON.stringify(post)));
+  post.title =  '';
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .form{
   position: relative;
   display: flex;
@@ -200,6 +245,30 @@ const addTag = () => {
   border-radius: 10px;
   background: $white;
   gap: 30px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar { width: 0; }
+
+  &__tags {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+
+    &__checkbox {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+
+      input {
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
 
   &__add-tags {
     display: flex;
@@ -209,7 +278,7 @@ const addTag = () => {
     gap: 20px;
 
     &__input {
-      width: 30%;
+      width: 100%;
       padding: 15px 10px;
       border: 1px solid #dbdbdb;
       border-radius: 10px;
@@ -224,6 +293,7 @@ const addTag = () => {
       border: none;
       background: $accent;
       color: $white;
+      font-size: 20px;
 
       &:hover {
         background: $accent-hover;

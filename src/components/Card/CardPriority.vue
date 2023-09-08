@@ -37,7 +37,7 @@
 const props = defineProps(['priority']);
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .priority {
     display: flex;
     justify-content: center;

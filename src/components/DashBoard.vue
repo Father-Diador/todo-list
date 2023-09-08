@@ -11,7 +11,7 @@ const del = () => {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .right__wrapper {
     box-sizing: border-box;
     max-width: 20%;

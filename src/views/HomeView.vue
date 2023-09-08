@@ -2,7 +2,7 @@
     <div class="wrapper">
         <SideBar />
         <CardForm v-if="isOpen" />
-        <CardList />
+        <CardsList />
         <DashBoard />
     </div>
 </template>
@@ -16,7 +16,7 @@ const optionsPush = (value) => { setOptionFromStorage(value) };
 
 
 import CardForm from '@/components/CardCreateForm/App.vue'
-import CardList from '@/components/CardList.vue'
+import CardsList from '@/components/CardsList.vue'
 import SideBar from '@/components/SideBar.vue'
 import DashBoard from '@/components/DashBoard.vue'
 import { onBeforeMount } from "vue";

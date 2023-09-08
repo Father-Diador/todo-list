@@ -4,7 +4,9 @@
         <div class="card__content" @click.stop="openCard">
           <div class="card__content__upper">
             <CardStatus v-if="card.status" :card="card" />
-            <span class="card__content__title">{{ card.title }}</span>
+            <span class="card__content__title">
+              {{ card.title }}
+            </span>
             <div class="card__content__utils">
               <CardPriority :priority="card.priority" />
               <div
@@ -55,39 +57,37 @@
                 @click.stop="toogleChildCards"
                 class="card__content__chevron"
               >
-                <img class="svg-icon" src="@/assets/icons/down.svg" alt="" :style="{  transform: menuChevronTwo }">
+                <img
+                  class="svg-icon"
+                  src="@/assets/icons/down.svg"
+                  alt=""
+                  :style="{  transform: menuChevronTwo }"
+                >
               </div>
             </div>
           </div>
           <div class="card__content__lower" :style="{ display: displayValue }">
-            <div class="card__content__lower__left">
-              <div class="card__content__label-info">
-                <span>Начало:</span>
-                <span>{{ card.date }}</span>
-              </div>
-              <div class="card__content__label-info">
-                <span>Окончание:</span>
-                <span>{{ card.endDate }}</span>
-              </div>
+            <div class="card__content__description">
+              {{ card.description }}
             </div>
-            <div class="card__content__lower__right">
-              <span
-                v-for="tag in card.tags"
-                :key="tag"
+            <div class="card__content__lower__blocks">
+              <div class="card__content__lower__left">
+                <div class="card__content__label-info">
+                  <span>Начало:</span>
+                  <span>{{ card.date }}</span>
+                </div>
+                <div class="card__content__label-info">
+                  <span>Окончание:</span>
+                  <span>{{ card.endDate }}</span>
+                </div>
+              </div>
+              <div
+                v-if="card.tags.length || card.posts.length"
+                class="card__content__lower__right"
               >
-                <span
-                  v-if="tag.value === 0"
-                  class="card__content__empty-tag"
-                >
-                  {{ tag.title }}
-                </span>
-                <span
-                  class="card__content__tag"
-                  v-else
-                >
-                  {{ tag.title }}
-                </span>
-              </span>
+                <CardTags :tags="card.tags"/>
+                <CardTags :tags="card.posts"/>
+              </div>
             </div>
           </div>
         </div>
@@ -105,8 +105,9 @@
 
 <script setup>
 import Icon from "@/components/shared/SvgIcon.vue"
-import CardStatus from "@/components/CardStatus.vue"
-import CardPriority from "@/components/CardPriority.vue"
+import CardStatus from "@/components/Card/CardStatus.vue"
+import CardTags from "@/components/Card/CardTags.vue"
+import CardPriority from "@/components/Card/CardPriority.vue"
 import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
 import { ref } from "vue";
@@ -179,7 +180,7 @@ const deleteCard = (id) => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 *{
   box-sizing: border-box;
 }
@@ -197,61 +198,59 @@ const deleteCard = (id) => {
   }
 
   &__menu {
-      position: relative;
+    position: relative;
 
-      &__add-btn {
-        cursor: pointer;
+    &__add-btn {
+      cursor: pointer;
+      width: 60px;
+      height: 40px;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: $accent;
+      color: $white;
+      transition: 0.3s;
+
+      &:hover {
+        background: $accent-hover;
+      }
+    }
+
+    &__link {
+      z-index: 9;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 40px;
+      left: 0;
+
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0 0 7px 7px;
+      overflow: hidden;
+
+      &-content {
         width: 60px;
         height: 40px;
-        font-size: 20px;
+        font-size: 15px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: $accent;
-        color: $white;
+        background: $light-gray;
         transition: 0.3s;
 
         &:hover {
-          background: $accent-hover;
+          background: #89a8f0;
         }
       }
-
-      &__link {
-        z-index: 9;
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 40px;
-        left: 0;
-
-        cursor: pointer;
-        justify-content: center;
-        align-items: center;
-        border-radius: 0 0 7px 7px;
-        overflow: hidden;
-
-        &-content {
-          width: 60px;
-          height: 40px;
-          font-size: 15px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: $light-gray;
-          transition: 0.3s;
-
-          &:hover {
-            background: #89a8f0;
-          }
-        }
-      }
+    }
   }
 
   &__content {
-    cursor: pointer;
     background: $white;
     width: 100%;
-    gap: 10px;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -259,57 +258,50 @@ const deleteCard = (id) => {
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.08);
 
     &__upper {
+      cursor: pointer;
       min-height: 52px;
       gap: 2.5px;
       width: 100%;
-      // min-height: 30px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      // padding-bottom: 15px;
+    }
+
+    &__description {
+      padding: 20px;
+      border-top: 1px solid $line;
+      border-bottom: 1px solid $line;
     }
 
     &__lower {
-      border-top: 1px solid $line;
       padding-top: 10px;
       min-height: 30px;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 20px;
+      flex-direction: column;
 
       &__left {
+        min-width: 220px;
         display: flex;
         flex-direction: column;
         gap: 10px;
-        padding: 10px 20px 10px 0;
-        border-right: 1px solid $line;
+        padding: 10px 20px;
       }
 
       &__right {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
+        flex-direction: column;
         gap: 10px;
+        padding: 10px 20px;
+        border-left: 1px solid $line;
       }
-    }
 
-    &__tag {
-      padding: 5px 10px;
-      background: $accent;
-      color: $white;
-      text-transform: uppercase;
-      border-radius: 5px;
-    }
-
-    &__empty-tag {
-      padding: 5px 10px;
-      background: $light-gray;
-      color: $gray;
-      text-transform: uppercase;
-      border-radius: 5px;
+      &__blocks {
+        padding-top: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+      }
     }
 
     &__label-info {
@@ -320,7 +312,6 @@ const deleteCard = (id) => {
       gap: 10px;
       color: $third-color;
       font-weight: 600;
-      // font-size: 14px;
     }
 
     &__status {

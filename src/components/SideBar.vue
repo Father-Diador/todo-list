@@ -8,7 +8,7 @@
         <div class="sidebar__btn">Проекты</div>
         <div class="btn-default sidebar__add" @click="toggleMenu">
             <span class="btn-default__plus">+</span>
-            <span>Добавить</span>
+            <span>Создать</span>
         </div>
     </div>
 </template>
@@ -26,7 +26,7 @@ const sort = (value) => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .sidebar {
     &__wrapper {
         box-sizing: border-box;

@@ -3,12 +3,17 @@
       <div class="card__wrapper">
         <div class="card__content" @click.stop="openCard">
           <div class="card__content__upper">
-            <CardStatus v-if="card.status" :card="card" />
-            <span class="card__content__title">
-              {{ card.title }}
-            </span>
+            <div class="card__content__wrap-t">
+              <CardStatus v-if="card.status" :card="card" />
+              <span class="card__content__title">
+                {{ card.title }}
+              </span>
+            </div>
             <div class="card__content__utils">
-              <CardPriority :priority="card.priority" />
+              <CardPriority
+                :priority="card.priority"
+                class="card__content__utils__priority"
+              />
               <div
                 class="card__menu"
                 @mouseover.stop="toggleCardMenu"
@@ -52,17 +57,19 @@
                   </div>
                 </div>
               </div>
-              <div
-                v-if="card.subordinates.length"
-                @click.stop="toogleChildCards"
-                class="card__content__chevron"
-              >
-                <img
-                  class="svg-icon"
-                  src="@/assets/icons/down.svg"
-                  alt=""
-                  :style="{  transform: menuChevronTwo }"
+              <div class="card__content__chevron">
+                <div
+                  v-if="card.subordinates.length"
+                  @click.stop="toogleChildCards"
+                  class="card__content__chevron__content"
                 >
+                  <img
+                    class="svg-icon"
+                    src="@/assets/icons/down.svg"
+                    alt=""
+                    :style="{  transform: menuChevronTwo }"
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -87,6 +94,22 @@
               >
                 <CardTags :tags="card.tags"/>
                 <CardTags :tags="card.posts"/>
+              </div>
+            </div>
+            <div class="card__content__comments">
+              <span>Комменттарии</span>
+              <div class="card__content__comments__wrapper">
+                <input 
+                  type="text" 
+                  v-model="comment"
+                  placeholder="Введите комментарий"
+                  class="card__content__comments__input"
+                  @click.stop
+                >
+                <button
+                  class="card__content__comments__btn"
+                  @click.stop="addComment"
+                >+</button>
               </div>
             </div>
           </div>
@@ -135,6 +158,11 @@ const toogleChildCards = () => {
     menuChevronTwo.value = 'rotate(0)';
   }
 }
+
+const comment = ref();
+const addComment = () => {
+  console.log(comment.value);
+};
 
 const menuStore = useMenu();
 const { toggle } = menuStore;
@@ -199,6 +227,13 @@ const deleteCard = (id) => {
 
   &__menu {
     position: relative;
+    
+    @media (max-width: 1024px) {
+      width: 33%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
     &__add-btn {
       cursor: pointer;
@@ -257,18 +292,38 @@ const deleteCard = (id) => {
     border-radius: 10px;
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.08);
 
+    &__wrap-t {
+      display: flex;
+      flex-direction: row;
+      width: 70%;
+      
+      @media (max-width: 1024px) {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+      }
+    }
+
     &__upper {
+      padding: 0 20px;
       cursor: pointer;
       min-height: 52px;
-      gap: 2.5px;
+      gap: 20px;
       width: 100%;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+
+      @media (max-width: 1024px) {
+        flex-direction: column;
+        padding: 0 20px;
+        gap: 10px;
+      }
     }
 
     &__description {
+      word-break: break-all;
       padding: 20px;
       border-top: 1px solid $line;
       border-bottom: 1px solid $line;
@@ -285,6 +340,10 @@ const deleteCard = (id) => {
         flex-direction: column;
         gap: 10px;
         padding: 10px 20px;
+
+        @media (max-width: 1024px) {
+          width: 100%;
+        }
       }
 
       &__right {
@@ -293,14 +352,58 @@ const deleteCard = (id) => {
         gap: 10px;
         padding: 10px 20px;
         border-left: 1px solid $line;
+
+        @media (max-width: 1024px) {
+          width: 100%;
+          border: none;
+        }
       }
 
       &__blocks {
-        padding-top: 10px;
+        padding: 10px 0;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
+
+        @media (max-width: 1024px) {
+          flex-direction: column;
+        }
+      }
+    }
+
+    &__comments {
+      padding: 20px 20px 10px 20px;
+      border-top: 1px solid $line;
+
+      &__wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      &__input {
+        width: 100%;
+        padding: 15px 10px;
+        border: 1px solid #dbdbdb;
+        border-radius: 10px;
+        outline: none;
+        box-sizing: border-box;
+      }
+
+      &__btn {
+        cursor: pointer;
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: none;
+        background: $accent;
+        color: $white;
+        font-size: 20px;
+
+        &:hover {
+          background: $accent-hover;
+        }
       }
     }
 
@@ -315,46 +418,83 @@ const deleteCard = (id) => {
     }
 
     &__status {
-      width: 10%;
+      padding-right: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       border-right: 1px solid $line;
       height: 100%;
+      margin-right: 20px;
+
+      @media (max-width: 1024px) {
+        margin-right: 0;
+        padding: 0;
+        border: none;
+      }
     }
 
     &__title {
-      width: 55%;
+      display: flex;
+      align-items: center;
+      width: 100%;
       font-size: 18px;
       color: $third-color;
       font-weight: 600;
-      line-height: 30px;
       word-break: break-all;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
+
+      @media (min-width: 1024px) {
+        margin: 10px 0;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
     }
 
     &__utils {
-      max-width: 30%;
-      width: 30%;
+      max-width: 250px;
+      width: 250px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: flex-end;
       gap: 20px;
+
+      &__priority {
+        @media (max-width: 1024px) {
+          width: 33%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+        }
+      }
+      
+      @media (max-width: 1024px) {
+        justify-content: space-between;
+        max-width: 100%;
+        width: 100%;
+      }
     }
 
     &__chevron {
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      border-radius: 50%;
-      background: $bg;
-      font-size: 18px;
+      @media (max-width: 1024px) {
+        width: 33%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      &__content {
+        width: 44px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        border-radius: 50%;
+        background: $bg;
+        font-size: 18px;
+      }
     }
   }
 

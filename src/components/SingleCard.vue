@@ -96,22 +96,7 @@
                 <CardTags :tags="card.posts"/>
               </div>
             </div>
-            <div class="card__content__comments">
-              <span>Комменттарии</span>
-              <div class="card__content__comments__wrapper">
-                <input 
-                  type="text" 
-                  v-model="comment"
-                  placeholder="Введите комментарий"
-                  class="card__content__comments__input"
-                  @click.stop
-                >
-                <button
-                  class="card__content__comments__btn"
-                  @click.stop="addComment"
-                >+</button>
-              </div>
-            </div>
+            <CardComments :cardId="card.id" :cardComments="card.comments" />
           </div>
         </div>
         <div v-if="isVissible" class="card__child">
@@ -131,6 +116,7 @@ import Icon from "@/components/shared/SvgIcon.vue"
 import CardStatus from "@/components/Card/CardStatus.vue"
 import CardTags from "@/components/Card/CardTags.vue"
 import CardPriority from "@/components/Card/CardPriority.vue"
+import CardComments from "@/components/Card/CardComments.vue"
 import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
 import { ref } from "vue";
@@ -159,16 +145,8 @@ const toogleChildCards = () => {
   }
 }
 
-const comment = ref();
-const addComment = () => {
-  console.log(comment.value);
-};
-
 const menuStore = useMenu();
 const { toggle } = menuStore;
-
-const cardsStore = useCards();
-const { setSelectedCard } = cardsStore;
 
 const menu = ref('none');
 const menuRadius = ref('7px');
@@ -193,6 +171,9 @@ const cardStatus = () => {
     card.status = 1;
   }
 };
+
+const cardsStore = useCards();
+const { setSelectedCard } = cardsStore;
 
 const setChildCard = (id) => {
   setSelectedCard(id);
@@ -368,41 +349,6 @@ const deleteCard = (id) => {
 
         @media (max-width: 1024px) {
           flex-direction: column;
-        }
-      }
-    }
-
-    &__comments {
-      padding: 20px 20px 10px 20px;
-      border-top: 1px solid $line;
-
-      &__wrapper {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        margin: 20px 0;
-      }
-
-      &__input {
-        width: 100%;
-        padding: 15px 10px;
-        border: 1px solid #dbdbdb;
-        border-radius: 10px;
-        outline: none;
-        box-sizing: border-box;
-      }
-
-      &__btn {
-        cursor: pointer;
-        border-radius: 10px;
-        padding: 10px 20px;
-        border: none;
-        background: $accent;
-        color: $white;
-        font-size: 20px;
-
-        &:hover {
-          background: $accent-hover;
         }
       }
     }

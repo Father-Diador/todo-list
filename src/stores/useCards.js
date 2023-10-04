@@ -25,6 +25,20 @@ export const useCards = defineStore('cards', () => {
     return false
   };
 
+  const setComment = (params) => {
+    let card = findById(cards.value, Number(params.card_id));
+
+    let today = new Date();
+    let day = String(today.getDate()).padStart(2, '0');
+    let month = String(today.getMonth() + 1).padStart(2, '0');
+    let year = today.getFullYear();
+    today = year + '-' + month + '-' + day;
+
+    const comment = { id: Date.now(), date: today, value: params.comment } ;
+    card.comments.push(comment);
+    localStorage.setItem("allCards", JSON.stringify(cards.value));
+  };
+
   // Добавление карточки
   const setCard = (card) => {
     if(selectedCard.value) {
@@ -63,5 +77,5 @@ export const useCards = defineStore('cards', () => {
     selectedCard.value = value;
   };
 
-  return { cards, selectedCard, selectedOptions, setCard, setCardFromStorage, setOptionFromStorage, setSelectedCard };
+  return { cards, selectedCard, selectedOptions, setCard, setCardFromStorage, setOptionFromStorage, setSelectedCard, setComment };
 });

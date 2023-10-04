@@ -161,6 +161,7 @@ let card = reactive({
   subordinates: [],
   tags: [],
   posts: [],
+  comments: [],
   date: '',
   endDate: '',
 });

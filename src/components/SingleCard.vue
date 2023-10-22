@@ -15,6 +15,7 @@
                 class="card__content__utils__priority"
               />
               <div
+                v-if="card.status != 2"
                 class="card__menu"
                 @mouseover.stop="toggleCardMenu"
                 @mouseout.stop="toggleCardMenu"
@@ -47,7 +48,7 @@
                   </div>
                   <div
                     class="card__menu__link-content"
-                    @click.stop="cardStatus"
+                    @click.stop="ChangeCard(card.id)"
                   >
                     <img
                       class="svg-icon"
@@ -96,7 +97,7 @@
                 <CardTags :tags="card.posts"/>
               </div>
             </div>
-            <CardComments :cardId="card.id" :cardComments="card.comments" />
+            <CardComments :card="card" :cardComments="card.comments" />
           </div>
         </div>
         <div v-if="isVissible" class="card__child">
@@ -164,16 +165,8 @@ const toggleCardMenu = () => {
   }
 };
 
-const cardStatus = () => {
-  if (card.status === 1) {
-    card.status = 2;
-  } else {
-    card.status = 1;
-  }
-};
-
 const cardsStore = useCards();
-const { setSelectedCard } = cardsStore;
+const { setSelectedCard, changeCardStatus } = cardsStore;
 
 const setChildCard = (id) => {
   setSelectedCard(id);
@@ -186,6 +179,10 @@ const editCard = (id) => {
 
 const deleteCard = (id) => {
   console.log(id);
+};
+
+const ChangeCard = (id) => {
+  changeCardStatus(id);
 };
 </script>
 

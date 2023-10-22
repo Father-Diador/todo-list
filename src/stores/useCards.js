@@ -4,6 +4,7 @@ import { ref } from 'vue';
 export const useCards = defineStore('cards', () => {
 
   const cards = ref([]);
+  const inactiveCards = ref([]);
   const selectedCard = ref(null);
   const selectedOptions = ref([]);
 
@@ -65,6 +66,17 @@ export const useCards = defineStore('cards', () => {
     localStorage.setItem("selectedOptions", JSON.stringify(selectedOptions.value));
   };
 
+  // Изменение статуса карточки
+  const changeCardStatus = (card) => {
+    let head = findById(cards.value, Number(card));
+    if (!head) {
+      console.error("head not found: " + card.selectedCard);
+      return;
+    }
+    head.status = 2;
+    localStorage.setItem("allCards", JSON.stringify(cards.value));
+  };
+
   const setCardFromStorage = (value) => {
     cards.value = value;
   };
@@ -77,5 +89,5 @@ export const useCards = defineStore('cards', () => {
     selectedCard.value = value;
   };
 
-  return { cards, selectedCard, selectedOptions, setCard, setCardFromStorage, setOptionFromStorage, setSelectedCard, setComment };
+  return { cards, inactiveCards, selectedCard, selectedOptions, changeCardStatus, setCard, setCardFromStorage, setOptionFromStorage, setSelectedCard, setComment };
 });

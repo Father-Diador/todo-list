@@ -1,7 +1,7 @@
 <template>
     <div class="comments">
-        <span>Комменттарии</span>
-        <div class="comments__wrapper">
+        <span>Комментарии:</span>
+        <div v-if="card.status != 2" class="comments__wrapper">
           <input 
             type="text" 
             v-model="comment"
@@ -44,7 +44,7 @@
 import { ref } from "vue";
 import { useCards } from "@/stores/useCards";
 
-const props = defineProps(['cardId', 'cardComments']);
+const props = defineProps(['card', 'cardComments']);
 
 const commentsBtn = ref('Показать комментарии');
 const showComments = ref(false);
@@ -66,7 +66,7 @@ const addComment = () => {
   if (!comment.value.length) {
     return;
   }
-  let params = { comment: comment.value, card_id: props.cardId }
+  let params = { comment: comment.value, card_id: props.card.id }
   setComment(params);
   comment.value = null;
 };

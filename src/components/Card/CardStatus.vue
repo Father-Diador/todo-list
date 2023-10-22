@@ -1,8 +1,8 @@
 <template>
     <div class="card__content__status">
         <template v-if="card.status === 1">
-            <img v-if="!card" class="status-icon" src="@/assets/icons/status-flash.svg" alt="">
-            <img v-if="card" class="status-icon" src="@/assets/icons/status-proccess.svg" alt="">
+            <img v-if="card.priority == 1" class="status-icon" src="@/assets/icons/status-flash.svg" alt="">
+            <img v-else class="status-icon" src="@/assets/icons/status-proccess.svg" alt="">
         </template>
         <img v-if="card.status === 2" class="status-icon" src="@/assets/icons/status-done.svg" alt="">
     </div>
@@ -15,6 +15,7 @@ const props = defineProps(['card']);
 
 onBeforeMount(() => {
     if (props.card.endDate) {
+        console.log(props.card.priority);
         console.log(props.card.endDate);
     }
 });

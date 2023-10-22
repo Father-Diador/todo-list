@@ -283,6 +283,7 @@ const ChangeCard = (id) => {
     }
 
     &__upper {
+      border-radius: 10px;
       padding: 0 20px;
       cursor: pointer;
       min-height: 52px;

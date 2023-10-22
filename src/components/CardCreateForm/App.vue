@@ -73,7 +73,7 @@
       </div>
       <div class="form__tags">
         <div class="form__tags__block">
-          <div class="form__tags__checkbox">
+          <div class="form__tags__checkbox" @click="tags = !tags">
             <input type="checkbox" v-model="tags">
             <span>Добавить тэг</span>
           </div>
@@ -103,7 +103,7 @@
           </div>
         </div>
         <div class="form__tags__block">
-          <div class="form__tags__checkbox">
+          <div class="form__tags__checkbox" @click="posts = !posts">
             <input type="checkbox" v-model="posts">
             <span>Добавить человека</span>
           </div>
@@ -258,13 +258,21 @@ const addPost = () => {
     width: 100%;
 
     &__checkbox {
-      display: flex;
+      cursor: pointer;
+      display: inline-flex;
+      padding: 10px;
+      border-radius: 10px;
       justify-content: flex-start;
       gap: 10px;
       align-items: center;
-      margin-bottom: 20px;
+      transition: 0.3s;
+
+      &:hover {
+        background: #dbdbdb;
+      }
 
       input {
+        cursor: pointer;
         width: 15px;
         height: 15px;
       }
@@ -362,6 +370,7 @@ const addPost = () => {
   }
 
   &__input-pos {
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;

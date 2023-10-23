@@ -1,6 +1,11 @@
 <template>
     <div class="header">
-        <div class="btn-default" @click="toggleMenu">Добавить</div>
+        <div class="header__sidebar" @click="toogleSide">
+            <img src="@/assets/icons/sidebar-icon.png" alt="">
+        </div>
+        <div class="header__search">
+            <Search />
+        </div>
         <div class="header__date">
             <span>
                 Today
@@ -15,10 +20,13 @@
 <script setup>
 import { ref } from "vue";
 import { useMenu } from "@/stores/useMenu";
+import Search from "@/components/Search.vue"
 
 const menuStore = useMenu();
-const { toggle } = menuStore;
+const { toggle, toogleSidebar } = menuStore;
 const toggleMenu = () => { toggle() };
+
+const toogleSide = () => { toogleSidebar() };
 
 const currentDay = ref();
 
@@ -32,22 +40,38 @@ currentDay.value = mm + '.' + dd + '.' + yyyy;
 
 <style lang="scss" scoped>
 .header {
-    position: fixed;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    padding: 20px 40px;
+    padding: 20px 0;
     width: 100%;
     top: 0;
     box-sizing: border-box;
     height: 100px;
-    background: $white;
+    // background: $white;
     // border-bottom: 1px solid ;
-    -webkit-box-shadow: 0px 4px 11px -6px rgba(34, 60, 80, 0.2);
-    -moz-box-shadow: 0px 4px 11px -6px rgba(34, 60, 80, 0.2);
-    box-shadow: 0px 4px 11px -6px rgba(34, 60, 80, 0.2);
+    // -webkit-box-shadow: 0px 4px 11px -6px rgba(34, 60, 80, 0.2);
+    // -moz-box-shadow: 0px 4px 11px -6px rgba(34, 60, 80, 0.2);
+    // box-shadow: 0px 4px 11px -6px rgba(34, 60, 80, 0.2);
+
+    &__sidebar {
+        cursor: pointer;
+        padding: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        transition: 0.3s;
+        img {
+            width: 32px;
+            height: 32px;
+        }
+
+        &:hover {
+            background: $white;
+        }
+    }
 
     &__date {
         display: flex;

@@ -32,13 +32,13 @@
   </script>
   
   <style lang="scss" scoped>
-  .cards{
+  .cards {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
     gap: 20px;
-    margin-top: 30px;
+    margin: 30px 0;
   
     &__title {
       font-size: 24px;

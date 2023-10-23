@@ -1,63 +1,44 @@
 <template>
-    <div class="sidebar__wrapper" :style="{ width: sidebarWidth + 'px' }">
-        <div @click="toogleSidebar()" class="sidebar__toogle">
-            <img src="@/assets/icons/sidebar-icon.png" alt="">
-        </div>
+    <div class="sidebar__wrapper" :style="{ width: sideBar + 'px' }">
         <img src="/public/logo.svg" class="sidebar__logo" alt="">
         <router-link to="/" class="sidebar__btn">
             <img src="@/assets/icons/in-process.svg" alt="">
-            <span>В процессе</span>
+            <span :style="{ opacity: sidebarOpacity }">В процессе</span>
         </router-link>
         <router-link to="/donecards" class="sidebar__btn">
             <img src="@/assets/icons/in-done.svg" alt="">
-            <span>Закрытые</span>
+            <span :style="{ opacity: sidebarOpacity }">Закрытые</span>
         </router-link>
         <div class="btn-default sidebar__add" @click="toggleMenu">
             <span class="btn-default__plus">
                 <img src="@/assets/icons/add-card.svg" alt="">
             </span>
-            <!-- <span>+</span> -->
         </div>
     </div>
 </template>
 
 <script setup>
 import { useMenu } from "@/stores/useMenu";
-import { ref } from 'vue';
+import { storeToRefs } from "pinia";
 
 const menuStore = useMenu();
-const { toggle, setSort } = menuStore;
+const { toggle } = menuStore;
+const { sidebarOpacity, sideBar } = storeToRefs(menuStore);
 const toggleMenu = () => { toggle() };
-
-const sort = (value) => {
-    console.log(value);
-    setSort(value);
-};
-const sidebarWidth = ref(100);
-
-const toogleSidebar = () => {
-    if (sidebarWidth.value === 100) {
-        sidebarWidth.value = 300;
-    } else {
-        sidebarWidth.value = 100;
-    }
-};
 </script>
 
 <style lang="scss" scoped>
 .sidebar {
     &__wrapper {
         box-sizing: border-box;
-        position: fixed;
-        top: 0;
-        left: 0;
         display: flex;
         flex-direction: column;
         gap: 15px;
         // width: 100px;
         height: 100vh;
-        padding: 0 20px 50px 20px;
+        padding: 20px;
         background: $white;
+        transition: 0.1s;
 
         -webkit-box-shadow: 4px 0px 8px -8px rgba(34, 60, 80, 0.2);
         -moz-box-shadow: 4px 0px 8px -8px rgba(34, 60, 80, 0.2);
@@ -86,8 +67,9 @@ const toogleSidebar = () => {
         width: 100%;
         height: 60px;
         box-sizing: border-box;
-        padding: 15px;
-        border-radius: 7px;
+        padding: 10px;
+        // border-radius: 0 7px 7px 0;
+        border-left: 5px solid transparent;
         color: $main-color;
         font-size: 20px;
         line-height: 20px;
@@ -108,6 +90,12 @@ const toogleSidebar = () => {
         &:hover {
             background: #F7F8FA;
             color: $second-color;
+            border-radius: 7px;
+        }
+
+        span {
+            transition-delay: 0.3s;
+            transition: 0.3s;
         }
     }
 
@@ -120,5 +108,7 @@ const toogleSidebar = () => {
 .router-link-exact-active {
     background: #F7F8FA;
     color: $second-color;
+    border-left: 5px solid $accent;
+    border-radius: 0 7px 7px 0 !important;
 }
 </style>

@@ -6,6 +6,7 @@ export const useCards = defineStore('cards', () => {
   const cards = ref([]);
   const inactiveCards = ref([]);
   const selectedCard = ref(null);
+  const editedCard = ref(null);
   const selectedOptions = ref([]);
 
   // Поиск в массиве карточек
@@ -77,6 +78,33 @@ export const useCards = defineStore('cards', () => {
     localStorage.setItem("allCards", JSON.stringify(cards.value));
   };
 
+  // Изменение карточки
+  const editCard = (card) => {
+    console.log(card);
+    let head = findById(cards.value, Number(card.id));
+    console.log(head);
+    if (!head) {
+      console.error("head not found: " + card.selectedCard);
+      return;
+    }
+    editedCard.value = null;
+    console.log(123123);
+    // head = card;
+    head.id = card.id;
+    head.priority = card.priority;
+    head.title = card.title;
+    head.description = card.description;
+    head.selectedCard = card.selectedCard;
+    head.subordinates = card.subordinates;
+    head.tags = card.tags;
+    head.posts = card.posts;
+    head.comments = card.comments;
+    head.date = card.date;
+    head.endDate = card.endDate;
+    console.log(cards.value);
+    localStorage.setItem("allCards", JSON.stringify(cards.value));
+  };
+
   const setCardFromStorage = (value) => {
     cards.value = value;
   };
@@ -89,5 +117,9 @@ export const useCards = defineStore('cards', () => {
     selectedCard.value = value;
   };
 
-  return { cards, inactiveCards, selectedCard, selectedOptions, changeCardStatus, setCard, setCardFromStorage, setOptionFromStorage, setSelectedCard, setComment };
+  const setEditedCard = (value) => {
+    editedCard.value = value;
+  };
+
+  return { cards, inactiveCards, selectedCard, editedCard, selectedOptions, editCard, changeCardStatus, setCard, setCardFromStorage, setOptionFromStorage, setSelectedCard, setEditedCard, setComment };
 });

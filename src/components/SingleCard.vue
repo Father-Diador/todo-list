@@ -36,16 +36,16 @@
                   </div>
                   <div
                     class="card__menu__link-content"
-                    @click.stop="editCard(card.id)"
+                    @click.stop="editCard(card)"
                   >
                     <img class="svg-icon" src="@/assets/icons/edit.svg" alt="">
                   </div>
-                  <div
+                  <!-- <div
                     class="card__menu__link-content"
                     @click.stop="deleteCard(card.id)"
                   >
                     <img class="svg-icon" src="@/assets/icons/delete.svg" alt="">
-                  </div>
+                  </div> -->
                   <div
                     class="card__menu__link-content"
                     @click.stop="ChangeCard(card.id)"
@@ -166,20 +166,22 @@ const toggleCardMenu = () => {
 };
 
 const cardsStore = useCards();
-const { setSelectedCard, changeCardStatus } = cardsStore;
+const { setSelectedCard, changeCardStatus, setEditedCard } = cardsStore;
 
 const setChildCard = (id) => {
+  console.log(id);
   setSelectedCard(id);
   toggle();
 };
 
-const editCard = (id) => {
-  console.log(id);
+const editCard = (card) => {
+  setEditedCard(card);
+  toggle();
 };
 
-const deleteCard = (id) => {
-  console.log(id);
-};
+// const deleteCard = (id) => {
+//   console.log(id);
+// };
 
 const ChangeCard = (id) => {
   changeCardStatus(id);

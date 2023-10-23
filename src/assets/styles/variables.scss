@@ -2,6 +2,7 @@
 @import url('https://fonts.cdnfonts.com/css/apercu-pro');
 
 $white: #ffffff;
+// $white: #202528;
 $black: #000000;
 $gray: #4d4d4d;
 $light-gray: #F0F1F3;
@@ -9,6 +10,7 @@ $line: rgba(0, 0, 0, 0.1);
 
 $accent: #2c64e5;
 $accent-hover: #5b86eb;
+$accent-light: #b3deff;
 $accent-gradient-hover: linear-gradient(112deg,#2c64e5 0%,#3396ff 100%);
 $accent-transparent: rgba(181, 59, 254, .2);
 
@@ -19,8 +21,10 @@ $third-color: #5E5E5E;
 $bg-header: #101010;
 $bg-header-transparent: rgba(0,0,0,.7);
 $bg: #F7F8FA;
+// $bg: #17171e;
 $bg-second: #f5f5f5;
 $bg-transparent: rgba(0,0,0,.5);
+$bg-overlay: rgba(0,0,0,.7);
 
 @mixin test {
     background: $white;

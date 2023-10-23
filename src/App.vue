@@ -1,16 +1,18 @@
 <template>
-  <div>
+  <div class="main-wrp">
+    <SideBar />
     <div class="wrapper">
+      <Header />
       <router-view></router-view>
     </div>
     <CardForm v-if="isOpen" />
-    <SideBar />
     <DashBoard />
   </div>
 </template>
 
 <script setup>
 import SideBar from '@/components/SideBar.vue'
+import Header from '@/components/Header.vue'
 import DashBoard from '@/components/DashBoard.vue'
 import CardForm from '@/components/CardCreateForm/App.vue'
 import { onBeforeMount } from "vue";
@@ -38,4 +40,10 @@ onBeforeMount(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.main-wrp {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+</style>

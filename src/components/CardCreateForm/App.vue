@@ -9,131 +9,145 @@
         <h4>Создать карточку</h4>   
       </div>
 
-      <div class="form__input-pos">
-        <label
-          class="form__input-pos__label"
-          for="title"
-        >
-          Название
-        </label>
-        <input 
-          name="title" 
-          type="text"
-          v-model="card.title"
-          placeholder="Введите название"
-          class="form__input-pos__input"
-        >
-      </div>
+      <div class="form__main-block">
+        <div class="form__input-pos">
+          <label
+            class="form__input-pos__label"
+            for="title"
+          >
+            Название
+          </label>
+          <input 
+            name="title" 
+            type="text"
+            v-model="card.title"
+            placeholder="Введите название"
+            class="form__input-pos__input"
+          >
+        </div>
 
-      <div class="form__input-pos">
-        <label
-          class="form__input-pos__label"
-          for="description"
-        >
-          Описание
-        </label>
-        <input 
-          name="description" 
-          type="text" 
-          v-model="card.description"
-          placeholder="Добавьте описание"
-          class="form__input-pos__input"
-        >
-      </div>
+        <div class="form__input-pos">
+          <label
+            class="form__input-pos__label"
+            for="description"
+          >
+            Описание
+          </label>
+          <input 
+            name="description" 
+            type="text" 
+            v-model="card.description"
+            placeholder="Добавьте описание"
+            class="form__input-pos__input"
+          >
+        </div>
 
-      <div class="form__input-pos">
-        <label
-          class="form__input-pos__label"
-          for="end"
-        >
-          Окончание
-        </label>
-        <input 
-          name="end" 
-          type="date" 
-          v-model="card.endDate"
-          placeholder="Добавьте описание"
-          class="form__input-pos__input"
-        >
-      </div>
-      <div class="form__input-pos">
-        <label class="form__input-pos__label" for="">
-          Приоритет
-        </label>
-        <select
-          v-model="card.priority"
-          class="form__input-pos__input"
-        >
-          <option value="">Выберите</option>
-          <option value="1">Срочный</option>
-          <option value="2">Высокий</option>
-          <option value="3">Нормальный</option>
-          <option value="4">Низкий</option>
-        </select>
-      </div>
-      <div class="form__tags">
-        <div class="form__tags__block">
-          <div class="form__tags__checkbox" @click="tags = !tags">
-            <input type="checkbox" v-model="tags">
-            <span>Добавить тэг</span>
-          </div>
-          <div class="form__input-pos" v-if="tags">
-            <div class="form__add-tags">
-              <input 
-                name="tags" 
-                type="text" 
-                v-model="tag.title"
-                placeholder="Добавьте тэг"
-                class="form__add-tags__input"
-              >
-              <button
-                class="form__add-tags__btn"
-                @click="addTag"
-              >+</button>
+        <div class="form__input-pos">
+          <label
+            class="form__input-pos__label"
+            for="end"
+          >
+            Окончание
+          </label>
+          <input 
+            name="end" 
+            type="date" 
+            v-model="card.endDate"
+            placeholder="Добавьте описание"
+            class="form__input-pos__input"
+          >
+        </div>
+        <div class="form__input-pos">
+          <label class="form__input-pos__label" for="">
+            Приоритет
+          </label>
+          <select
+            v-model="card.priority"
+            class="form__input-pos__input"
+          >
+            <option value="">Выберите</option>
+            <option value="1">Срочный</option>
+            <option value="2">Высокий</option>
+            <option value="3">Нормальный</option>
+            <option value="4">Низкий</option>
+          </select>
+        </div>
+        <div class="form__tags">
+          <div class="form__tags__block">
+            <div class="form__tags__checkbox" @click="tags = !tags">
+              <input type="checkbox" v-model="tags">
+              <span>Добавить тэг</span>
             </div>
-            <div class="form__add-tags__tags">
-              <span
-                v-for="tag in card.tags"
-                :key="tag"
-                class="form__add-tags__tag"
-              >
-                {{ tag.title }}
-              </span>
+            <div
+              v-if="card.tags.length"
+              @click="card.tags = []"
+              class="form__del-tags"
+            >Удалить</div>
+            <div class="form__input-pos" v-if="tags">
+              <div class="form__add-tags">
+                <input 
+                  name="tags" 
+                  type="text" 
+                  v-model="tag.title"
+                  placeholder="Добавьте тэг"
+                  class="form__add-tags__input"
+                >
+                <button
+                  class="form__add-tags__btn"
+                  @click="addTag"
+                >+</button>
+              </div>
+              <div class="form__add-tags__tags">
+                <span
+                  v-for="tag in card.tags"
+                  :key="tag"
+                  class="form__add-tags__tag"
+                >
+                  {{ tag.title }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form__tags__block">
+            <div class="form__tags__checkbox" @click="posts = !posts">
+              <input type="checkbox" v-model="posts">
+              <span>Добавить человека</span>
+            </div>
+            <div
+              v-if="card.posts.length"
+              @click="card.posts = []"
+              class="form__del-tags"
+            >Удалить</div>
+            <div class="form__input-pos" v-if="posts">
+              <div class="form__add-tags">
+                <input 
+                  name="tags" 
+                  type="text" 
+                  v-model="post.title"
+                  placeholder="Добавьте должность"
+                  class="form__add-tags__input"
+                >
+                <button
+                  class="form__add-tags__btn"
+                  @click="addPost"
+                >+</button>
+              </div>
+              <div class="form__add-tags__tags">
+                <span
+                  v-for="post in card.posts"
+                  :key="post"
+                  class="form__add-tags__tag"
+                >
+                  {{ post.title }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="form__tags__block">
-          <div class="form__tags__checkbox" @click="posts = !posts">
-            <input type="checkbox" v-model="posts">
-            <span>Добавить человека</span>
-          </div>
-          <div class="form__input-pos" v-if="posts">
-            <div class="form__add-tags">
-              <input 
-                name="tags" 
-                type="text" 
-                v-model="post.title"
-                placeholder="Добавьте должность"
-                class="form__add-tags__input"
-              >
-              <button
-                class="form__add-tags__btn"
-                @click="addPost"
-              >+</button>
-            </div>
-            <div class="form__add-tags__tags">
-              <span
-                v-for="post in card.posts"
-                :key="post"
-                class="form__add-tags__tag"
-              >
-                {{ post.title }}
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
-      <span class="btn-default" @click="addCard">Создать</span>
+
+      <span v-if="editedCard" class="btn-default" @click="saveCard">Сохранить</span>
+      <span v-else class="btn-default" @click="addCard">Создать</span>
     </div>
   </div>
 </template>
@@ -141,7 +155,7 @@
 <script setup>
 import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
-import { reactive, ref } from "vue";
+import { onBeforeMount, reactive, ref } from "vue";
 
 //стор на открытие меню
 const menuStore = useMenu();
@@ -150,7 +164,7 @@ const toggleMenu = () => { toggle() };
 
 //стор на создание карт
 const cardsStore = useCards();
-const { setCard } = cardsStore;
+const { setCard, editedCard, editCard } = cardsStore;
 const cardPush = (value) => { setCard(value) };
 
 let card = reactive({
@@ -167,7 +181,6 @@ let card = reactive({
 });
 
 const tags = ref(false);
-const tagTitle = ref();
 const tag = reactive({
   id: '',
   title: '',
@@ -175,7 +188,6 @@ const tag = reactive({
 });
 
 const posts = ref(false);
-const postTitle = ref();
 const post = reactive({
   id: '',
   title: '',
@@ -200,10 +212,6 @@ const addCard = () => {
       card.priority = '4';
     }
 
-    // if (!card.tags.length) {
-    //   card.tags.push({title: 'Тэги не выбраны', value: 0});
-    // }
-
     // автозаполнение даты окончания
     if (!card.endDate.length) {
       card.endDate = 'Не выбрано';
@@ -220,19 +228,56 @@ const addCard = () => {
   }
 };
 
+const saveCard = () => {
+  editCard(card);
+  toggleMenu();
+};
+
 // добавление тега
 const addTag = () => {
-  tag.id = Date.now();
-  card.tags.push(JSON.parse(JSON.stringify(tag)));
-  tag.title =  '';
+  if (tag.title) {
+    tag.id = Date.now();
+    card.tags.push(JSON.parse(JSON.stringify(tag)));
+    tag.title =  '';
+  }
 };
 
 // добавление должности
 const addPost = () => {
-  post.id = Date.now();
-  card.posts.push(JSON.parse(JSON.stringify(post)));
-  post.title =  '';
+  if (post.title) {
+    post.id = Date.now();
+    card.posts.push(JSON.parse(JSON.stringify(post)));
+    post.title =  '';
+  }
 };
+
+const checkIsEdit = () => {
+  if (editedCard) {
+    card.id = editedCard.id;
+    card.priority = editedCard.priority;
+    card.title = editedCard.title;
+    card.description = editedCard.description;
+    card.selectedCard = editedCard.selectedCard;
+    card.subordinates = editedCard.subordinates;
+    card.tags = editedCard.tags;
+    card.posts = editedCard.posts;
+    card.comments = editedCard.comments;
+    card.date = editedCard.date;
+    card.endDate = editedCard.endDate;
+
+    if (card.tags) {
+      tags.value = true;
+    }
+
+    if (card.posts) {
+      posts.value = true;
+    }
+  }
+};
+
+onBeforeMount(() => {
+  checkIsEdit();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -250,6 +295,18 @@ const addPost = () => {
   overflow-y: auto;
   
   &::-webkit-scrollbar { width: 0; }
+
+  &__main-block {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+
+    &::-webkit-scrollbar { display: none; }
+  }
 
   &__tags {
     display: flex;
@@ -276,6 +333,19 @@ const addPost = () => {
         width: 15px;
         height: 15px;
       }
+    }
+  }
+
+  &__del-tags {
+    cursor: pointer;
+    display: inline;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #dbdbdb;
+    transition: 0.3s;
+
+    &:hover {
+      background: #dbdbdb;
     }
   }
 
@@ -333,7 +403,7 @@ const addPost = () => {
     left: 0;
     width: 100%;
     height: 100vh;
-    background: $bg-header-transparent;
+    background: $bg-overlay;
     z-index: 10;
     display: flex;
     justify-content: center;

@@ -11,15 +11,8 @@
 
 <script setup>
 import SingleCard from '@/components/SingleCard.vue'
-import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
 import { storeToRefs } from "pinia";
-import { computed, ref } from "vue";
-
-const menuStore = useMenu();
-const { sort } = storeToRefs(menuStore);
-
-const stat = ref(1);
 
 const cardsStore = useCards();
 const { cards } = storeToRefs(cardsStore);
@@ -31,27 +24,19 @@ const allCards = cards.value.reduce((list, current) => {
   return list
 }, []);
 
-
-// const getSort = computed(() => {
-//   console.log(sort);
-//   return sort;
-// });
-
-// const sortedArray = computed(() => {
-//   return [...cards.value].sort((card1, card2) => (card1['priority'] > card2['priority']) ? 1 : -1);
-// });
 </script>
 
 <style lang="scss" scoped>
-.cards{
+.cards {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
   gap: 20px;
-  margin-top: 30px;
+  margin: 30px 0;
 
   &__title {
+    color: $third-color;
     font-size: 24px;
     font-weight: 500;
   }

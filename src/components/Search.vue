@@ -1,0 +1,47 @@
+<template>
+    <div class="search">
+        <input class="search__input" type="text" placeholder="Search here">
+        <div class="search__icon">
+            <img src="@/assets/icons/search.svg" alt="">
+        </div>
+    </div>
+</template>
+
+<style lang="scss" scoped>
+.search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: $white;
+    border-radius: 10px;
+    overflow: hidden;
+
+    &__input {
+        outline: none;
+        background: $white;
+        border: none;
+        width: 600px;
+        color: $main-color;
+        font-size: 18px;
+        line-height: 18px;
+        font-weight: 400;
+        padding: 10px;
+    }
+
+    &__icon {
+        cursor: pointer;
+        border-radius: 0 10px 10px 0;
+        padding: 15px;
+        transition: 0.3s;
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+
+        &:hover {
+            background: #89a8f0;
+        }
+    }
+}
+</style>

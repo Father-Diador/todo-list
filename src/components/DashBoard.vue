@@ -17,13 +17,10 @@ const del = () => {
 
 <style lang="scss" scoped>
 .right__wrapper {
-    position: fixed;
-    top: 0;
-    right: 0;
     box-sizing: border-box;
-    width: 100px;
+    min-width: 100px;
     height: 100vh;
-    padding: 50px 20px 20px;
+    padding: 20px;
     background: $white;
     display: flex;
     flex-direction: column;

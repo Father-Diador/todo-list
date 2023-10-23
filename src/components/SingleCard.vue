@@ -5,14 +5,14 @@
           <div class="card__content__upper">
             <div class="card__content__wrap-t">
               <CardStatus v-if="card.status" :card="card" />
-              <span class="card__content__title">
+              <span class="card__content__title search-word">
                 {{ card.title }}
               </span>
             </div>
             <div class="card__content__utils">
               <CardPriority
                 :priority="card.priority"
-                class="card__content__utils__priority"
+                class="card__content__utils__priority search-word"
               />
               <div
                 v-if="card.status != 2"
@@ -75,18 +75,18 @@
             </div>
           </div>
           <div class="card__content__lower" :style="{ display: displayValue }">
-            <div class="card__content__description">
+            <div class="card__content__description search-word">
               {{ card.description }}
             </div>
             <div class="card__content__lower__blocks">
               <div class="card__content__lower__left">
                 <div class="card__content__label-info">
                   <span>Начало:</span>
-                  <span>{{ card.date }}</span>
+                  <span class="search-word">{{ card.date }}</span>
                 </div>
                 <div class="card__content__label-info">
                   <span>Окончание:</span>
-                  <span>{{ card.endDate }}</span>
+                  <span class="search-word">{{ card.endDate }}</span>
                 </div>
               </div>
               <div

@@ -22,12 +22,15 @@
   const cardsStore = useCards();
   const { cards } = storeToRefs(cardsStore);
   
-  const allCards = cards.value.reduce((list, current) => {
+  const allCards = computed(() => {
+  return cards.value.reduce((list, current) => {
     if (current.status === 2) {
       list.push(current)
     }
+    console.log(list)
     return list
   }, []);
+});
   
   </script>
   

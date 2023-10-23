@@ -24,10 +24,10 @@
                     :key="comment.id"
                     class="comments__comments-list"
                 >
-                    <div class="comments__comments-list__date">
+                    <div class="comments__comments-list__date search-word">
                         {{ comment.date }}
                     </div>
-                    <div class="comments__comments-list__text">
+                    <div class="comments__comments-list__text search-word">
                         {{ comment.value }}
                     </div>
                 </div>

@@ -1,11 +1,41 @@
 <template>
     <div class="search">
-        <input class="search__input" type="text" placeholder="Search here">
+        <input
+            class="search__input"
+            type="text"
+            placeholder="Поиск"
+            @input="findText"
+            v-model="search"
+        >
         <div class="search__icon">
             <img src="@/assets/icons/search.svg" alt="">
         </div>
     </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const search = ref('');
+
+const findText = () => {
+    let allWords = document.getElementsByClassName('search-word');
+    if (search.value.length < 1) {
+        return;
+    }
+    for (let item of allWords) {
+        if (item.textContent.toLowerCase().includes(search.value.toLowerCase())) {
+            if (search.value.length > 1) {
+                item.style.color = '#cccc00';
+                console.log(item.textContent);
+            } else {
+                item.style.color = '#5e5e5e';
+            }
+        } else {
+            item.style.color = '#5e5e5e';
+        }
+    }
+};
+</script>
 
 <style lang="scss" scoped>
 .search {

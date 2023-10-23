@@ -13,16 +13,20 @@
 import SingleCard from '@/components/SingleCard.vue'
 import { useCards } from "@/stores/useCards";
 import { storeToRefs } from "pinia";
+import { computed } from 'vue';
 
 const cardsStore = useCards();
 const { cards } = storeToRefs(cardsStore);
 
-const allCards = cards.value.reduce((list, current) => {
-  if (current.status === 1) {
-    list.push(current)
-  }
-  return list
-}, []);
+const allCards = computed(() => {
+  return cards.value.reduce((list, current) => {
+    if (current.status === 1) {
+      list.push(current)
+    }
+    console.log(list)
+    return list
+  }, []);
+});
 
 </script>
 
@@ -36,7 +40,6 @@ const allCards = cards.value.reduce((list, current) => {
   margin: 30px 0;
 
   &__title {
-    color: $third-color;
     font-size: 24px;
     font-weight: 500;
   }

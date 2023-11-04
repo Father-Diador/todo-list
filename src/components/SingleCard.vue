@@ -14,7 +14,11 @@
                 :priority="card.priority"
                 class="card__content__utils__priority search-word"
               />
-              <div class="card__content__utils__comments" @click.stop="showComments()">
+              <div
+                v-if="card.status != 2"
+                class="card__content__utils__comments"
+                @click.stop="showComments()"
+              >
                 <img src="@/assets/icons/comments.svg" />
               </div>
               <div
@@ -125,7 +129,7 @@ import { useCards } from "@/stores/useCards";
 import { ref, computed } from "vue";
 
 const cardsStore = useCards();
-const { setSelectedCard, changeCardStatus, setEditedCard, setCommentsForCard, commentsForCard } = cardsStore;
+const { setSelectedCard, changeCardStatus, setEditedCard, setCommentsForCard } = cardsStore;
 
 const props = defineProps(['card']);
 
@@ -133,29 +137,22 @@ const displayValue = ref('none');
 
 const openCard = () => {
   if (displayValue.value == 'none') {
-    // setCommentsForCard(props.card);
     displayValue.value = 'flex';
   } else {
-    // setCommentsForCard(null);
     displayValue.value = 'none';
   }
 }
 
 const cardCom = computed(() => {
-  return commentsForCard;
+  return cardsStore.commentsForCard;
 })
 
 const showComments = () => {
   if (!cardCom.value) {
-    console.log(cardCom.value);
     setCommentsForCard(props.card);
   } else if (cardCom.value.id == props.card.id) {
-    console.log(cardCom.value.id)
-    console.log(cardCom.value.id + ":" + props.card.id + ":" + 1);
     setCommentsForCard(null);
   } else if (cardCom.value.id != props.card.id) {
-    console.log(cardCom.value.id)
-    console.log(cardCom.value.id + ":" + props.card.id + ":" + 2);
     setCommentsForCard(props.card);
   }
 }

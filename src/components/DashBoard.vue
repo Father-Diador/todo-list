@@ -2,8 +2,6 @@
     <div
         class="dashboard__wrapper"
         :style="{ width: dashBoard + 'px' }"
-        @mouseenter="toogleDashBoard"
-        @mouseleave="toogleDashBoard"
     >
         <div class="btn-default" @click="del">
             <span class="btn-default__plus">
@@ -19,7 +17,7 @@
 
 <script setup>
 import CardComments from "@/components/Card/CardComments.vue"
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useCards } from "@/stores/useCards";
 import { storeToRefs } from "pinia";
 
@@ -28,16 +26,16 @@ const { commentsForCard } = storeToRefs(menuStore);
 
 const dashBoard = ref(100);
 
-const toogleDashBoard = () => {
-    if (dashBoard.value == 100) {
+const card = computed(() => {
+    return commentsForCard.value;
+})
+
+watch(card, () => {
+    if (commentsForCard.value != null) {
         dashBoard.value = 500;
     } else {
         dashBoard.value = 100;
     }
-}
-
-const card = computed(() => {
-    return commentsForCard.value;
 })
 
 const del = () => {

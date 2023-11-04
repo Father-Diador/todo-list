@@ -27,7 +27,6 @@
     if (current.status === 2) {
       list.push(current)
     }
-    console.log(list)
     return list
   }, []);
 });

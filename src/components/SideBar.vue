@@ -34,7 +34,6 @@ const toggleMenu = () => { toggle() };
         display: flex;
         flex-direction: column;
         gap: 15px;
-        // width: 100px;
         height: 100vh;
         padding: 20px;
         background: $white;

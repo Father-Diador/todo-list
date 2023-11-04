@@ -26,7 +26,6 @@ const findText = () => {
         if (item.textContent.toLowerCase().includes(search.value.toLowerCase())) {
             if (search.value.length > 1) {
                 item.style.color = '#cccc00';
-                console.log(item.textContent);
             } else {
                 item.style.color = '#5e5e5e';
             }

@@ -10,7 +10,6 @@ export const useMenu = defineStore('menu', () => {
   const sidebarOpacity = ref(0);
 
   const toogleSidebar = () => {
-    console.log(1);
     if (!sidebarOpacity.value) {
         sideBar.value = 300;
         sidebarOpacity.value = 1;
@@ -19,7 +18,6 @@ export const useMenu = defineStore('menu', () => {
         sideBar.value = 100;
         sidebarOpacity.value = 0;
     }
-    console.log(sidebarOpacity.value, sideBar.value)
 };
 
   return { isOpen, toggle, sideBar, sidebarOpacity, toogleSidebar };

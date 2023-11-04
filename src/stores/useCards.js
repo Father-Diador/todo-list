@@ -9,6 +9,8 @@ export const useCards = defineStore('cards', () => {
   const editedCard = ref(null);
   const selectedOptions = ref([]);
 
+  const commentsForCard = ref(null);
+
   // Поиск в массиве карточек
   const findById = (tree, nodeId) => {
     console.log(tree);
@@ -28,8 +30,9 @@ export const useCards = defineStore('cards', () => {
   };
 
   const setComment = (params) => {
+    console.log(params);
     let card = findById(cards.value, Number(params.card_id));
-
+    console.log(card);
     let today = new Date();
     let day = String(today.getDate()).padStart(2, '0');
     let month = String(today.getMonth() + 1).padStart(2, '0');
@@ -117,9 +120,14 @@ export const useCards = defineStore('cards', () => {
     selectedCard.value = value;
   };
 
+  const setCommentsForCard = (value) => {
+    commentsForCard.value = value;
+    console.log(value);
+  };
+
   const setEditedCard = (value) => {
     editedCard.value = value;
   };
 
-  return { cards, inactiveCards, selectedCard, editedCard, selectedOptions, editCard, changeCardStatus, setCard, setCardFromStorage, setOptionFromStorage, setSelectedCard, setEditedCard, setComment };
+  return { cards, setCommentsForCard, commentsForCard, inactiveCards, selectedCard, editedCard, selectedOptions, editCard, changeCardStatus, setCard, setCardFromStorage, setOptionFromStorage, setSelectedCard, setEditedCard, setComment };
 });

@@ -97,7 +97,7 @@
                 <CardTags :tags="card.posts"/>
               </div>
             </div>
-            <CardComments :card="card" :cardComments="card.comments" />
+            <!-- <CardComments :card="card" :cardComments="card.comments" /> -->
           </div>
         </div>
         <div v-if="isVissible" class="card__child">
@@ -122,14 +122,19 @@ import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
 import { ref } from "vue";
 
+const cardsStore = useCards();
+const { setSelectedCard, changeCardStatus, setEditedCard, setCommentsForCard } = cardsStore;
+
 const props = defineProps(['card']);
 
 const displayValue = ref('none');
 
 const openCard = () => {
   if (displayValue.value == 'none') {
+    setCommentsForCard(props.card);
     displayValue.value = 'flex';
   } else {
+    setCommentsForCard(null);
     displayValue.value = 'none';
   }
 }
@@ -165,11 +170,7 @@ const toggleCardMenu = () => {
   }
 };
 
-const cardsStore = useCards();
-const { setSelectedCard, changeCardStatus, setEditedCard } = cardsStore;
-
 const setChildCard = (id) => {
-  console.log(id);
   setSelectedCard(id);
   toggle();
 };

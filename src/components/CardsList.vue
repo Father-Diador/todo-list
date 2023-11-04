@@ -23,7 +23,6 @@ const allCards = computed(() => {
     if (current.status === 1) {
       list.push(current)
     }
-    console.log(list)
     return list
   }, []);
 });

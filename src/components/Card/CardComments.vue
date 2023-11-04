@@ -1,7 +1,7 @@
 <template>
-    <div class="comments">
+    <div v-if="card.status != 2" class="comments">
         <span>Комментарии:</span>
-        <div v-if="card.status != 2" class="comments__wrapper">
+        <div class="comments__wrapper">
           <input 
             type="text" 
             v-model="comment"
@@ -14,7 +14,7 @@
             @click.stop="addComment"
           >+</button>
         </div>
-        <div class="comments__comments" v-if="cardComments.length">
+        <div class="comments__comments" v-if="cardComments">
             <div
                 v-if="showComments"
                 class="comments__comments__wrapper"
@@ -74,8 +74,9 @@ const addComment = () => {
 
 <style lang="scss" scoped>
 .comments {
-    padding: 20px 20px 10px 20px;
+    padding: 20px 0;
     border-top: 1px solid $line;
+    width: 100%;
 
     &__wrapper {
       display: flex;

@@ -14,6 +14,9 @@
                 :priority="card.priority"
                 class="card__content__utils__priority search-word"
               />
+              <div class="card__content__utils__comments" @click.stop="showComments()">
+                <img src="@/assets/icons/comments.svg" />
+              </div>
               <div
                 v-if="card.status != 2"
                 class="card__menu"
@@ -117,13 +120,12 @@ import Icon from "@/components/shared/SvgIcon.vue"
 import CardStatus from "@/components/Card/CardStatus.vue"
 import CardTags from "@/components/Card/CardTags.vue"
 import CardPriority from "@/components/Card/CardPriority.vue"
-import CardComments from "@/components/Card/CardComments.vue"
 import { useMenu } from "@/stores/useMenu";
 import { useCards } from "@/stores/useCards";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const cardsStore = useCards();
-const { setSelectedCard, changeCardStatus, setEditedCard, setCommentsForCard } = cardsStore;
+const { setSelectedCard, changeCardStatus, setEditedCard, setCommentsForCard, commentsForCard } = cardsStore;
 
 const props = defineProps(['card']);
 
@@ -131,11 +133,30 @@ const displayValue = ref('none');
 
 const openCard = () => {
   if (displayValue.value == 'none') {
-    setCommentsForCard(props.card);
+    // setCommentsForCard(props.card);
     displayValue.value = 'flex';
   } else {
-    setCommentsForCard(null);
+    // setCommentsForCard(null);
     displayValue.value = 'none';
+  }
+}
+
+const cardCom = computed(() => {
+  return commentsForCard;
+})
+
+const showComments = () => {
+  if (!cardCom.value) {
+    console.log(cardCom.value);
+    setCommentsForCard(props.card);
+  } else if (cardCom.value.id == props.card.id) {
+    console.log(cardCom.value.id)
+    console.log(cardCom.value.id + ":" + props.card.id + ":" + 1);
+    setCommentsForCard(null);
+  } else if (cardCom.value.id != props.card.id) {
+    console.log(cardCom.value.id)
+    console.log(cardCom.value.id + ":" + props.card.id + ":" + 2);
+    setCommentsForCard(props.card);
   }
 }
 
@@ -413,6 +434,29 @@ const ChangeCard = (id) => {
           display: flex;
           justify-content: flex-start;
           align-items: center;
+        }
+      }
+
+      &__comments {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        min-width: 60px;
+        height: 40px;
+        font-size: 20px;
+        background: $accent;
+        color: #ffffff;
+        transition: 0.3s;
+        border-radius: 8px;
+
+        &:hover {
+          background: $accent-hover;
+        }
+
+        img {
+          width: 24px;
+          height: 24px;
         }
       }
       

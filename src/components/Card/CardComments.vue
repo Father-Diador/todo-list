@@ -32,10 +32,10 @@
                     </div>
                 </div>
             </div>
-            <span
+            <!-- <span
                 @click.stop="showCommentsFunc"
                 class="comments__comments__show-btn btn-default"
-            >{{ commentsBtn }}</span>
+            >{{ commentsBtn }}</span> -->
         </div>
     </div>
 </template>
@@ -46,17 +46,18 @@ import { useCards } from "@/stores/useCards";
 
 const props = defineProps(['card', 'cardComments']);
 
-const commentsBtn = ref('Показать комментарии');
-const showComments = ref(false);
+const showComments = ref(true);
 
-const showCommentsFunc = () => {
-    showComments.value = !showComments.value;
-    if (showComments.value) {
-        commentsBtn.value = 'Скрыть комментарии';
-    } else {
-        commentsBtn.value = 'Показать комментарии';
-    }
-};
+// const commentsBtn = ref('Показать комментарии');
+
+// const showCommentsFunc = () => {
+//     showComments.value = !showComments.value;
+//     if (showComments.value) {
+//         commentsBtn.value = 'Скрыть комментарии';
+//     } else {
+//         commentsBtn.value = 'Показать комментарии';
+//     }
+// };
 
 const cardsStore = useCards();
 const { setComment } = cardsStore;

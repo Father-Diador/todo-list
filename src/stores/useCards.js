@@ -23,7 +23,7 @@ export const useCards = defineStore('cards', () => {
           let desiredNode = findById(subordinates, nodeId)
           if (desiredNode) return desiredNode
         } else {
-          return;
+          continue;
         }
     }
     return false

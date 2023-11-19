@@ -56,6 +56,11 @@ currentDay.value = mm + '.' + dd + '.' + yyyy;
     // -moz-box-shadow: 0px 4px 11px -6px rgba(34, 60, 80, 0.2);
     // box-shadow: 0px 4px 11px -6px rgba(34, 60, 80, 0.2);
 
+    &__search {
+        max-width: 670px;
+        width: 60%;
+    }
+
     &__sidebar {
         cursor: pointer;
         padding: 10px;

@@ -100,8 +100,8 @@
                 v-if="card.tags.length || card.posts.length"
                 class="card__content__lower__right"
               >
-                <CardTags :tags="card.tags"/>
-                <CardTags :tags="card.posts"/>
+                <CardTags title="Тэги" :tags="card.tags"/>
+                <CardTags title="Люди" :tags="card.posts"/>
               </div>
             </div>
             <!-- <CardComments :card="card" :cardComments="card.comments" /> -->

@@ -12,21 +12,25 @@
 <script setup>
 import SingleCard from '@/components/SingleCard.vue'
 import { useCards } from "@/stores/useCards";
+import { useMenu } from "@/stores/useMenu";
 import { storeToRefs } from "pinia";
 import { computed } from 'vue';
 
 const cardsStore = useCards();
 const { cards } = storeToRefs(cardsStore);
 
+const menuStore = useMenu();
+const { sort } = storeToRefs(menuStore);
+
 const allCards = computed(() => {
   return cards.value.reduce((list, current) => {
     if (current.status === 1) {
       list.push(current)
     }
-    return list
+    let i = [...list].sort((list1, list2) => (list1[sort.value] > list2[sort.value]) ? 1 : -1);
+    return i;
   }, []);
 });
-
 </script>
 
 <style lang="scss" scoped>

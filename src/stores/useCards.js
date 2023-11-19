@@ -122,7 +122,6 @@ export const useCards = defineStore('cards', () => {
 
   const setCommentsForCard = (value) => {
     commentsForCard.value = value;
-    console.log(value);
   };
 
   const setEditedCard = (value) => {

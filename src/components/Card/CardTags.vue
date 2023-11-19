@@ -1,5 +1,8 @@
 <template>
     <div class="tags">
+        <div class="tags__title">
+            {{ title }}
+        </div>
         <div
             v-for="tag in tags"
             :key="tag"
@@ -14,7 +17,7 @@
 
 <script setup>
 
-const props = defineProps(['tags'])
+const props = defineProps(['tags', 'title'])
 
 const search = (tag)  => {
     console.log(tag);
@@ -25,9 +28,15 @@ const search = (tag)  => {
 .tags {
     display: flex;
     flex-direction: row;
+    align-items: center;
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
+
+    &__title {
+        color: $third-color;
+        font-weight: 600;
+    }
 
     &__content {
         cursor: pointer;

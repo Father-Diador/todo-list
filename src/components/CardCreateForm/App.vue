@@ -74,15 +74,10 @@
         </div>
         <div class="form__tags">
           <div class="form__tags__block">
-            <div class="form__tags__checkbox" @click="tags = !tags">
+            <div class="form__tags__checkbox" @click="{ tags = !tags; card.tags = [] }">
               <input type="checkbox" v-model="tags">
               <span>Добавить тэг</span>
             </div>
-            <div
-              v-if="card.tags.length"
-              @click="card.tags = []"
-              class="form__del-tags"
-            >Удалить</div>
             <div class="form__input-pos" v-if="tags">
               <div class="form__add-tags">
                 <input 
@@ -109,15 +104,10 @@
             </div>
           </div>
           <div class="form__tags__block">
-            <div class="form__tags__checkbox" @click="posts = !posts">
+            <div class="form__tags__checkbox" @click="{ posts = !posts; card.posts = [] }">
               <input type="checkbox" v-model="posts">
               <span>Добавить человека</span>
             </div>
-            <div
-              v-if="card.posts.length"
-              @click="card.posts = []"
-              class="form__del-tags"
-            >Удалить</div>
             <div class="form__input-pos" v-if="posts">
               <div class="form__add-tags">
                 <input 
@@ -432,7 +422,7 @@ onBeforeMount(() => {
     line-height: 20px;
     position: absolute;
     top: 10px;
-    left: 10px;
+    right: 10px;
 
     &:hover {
       background: $accent-hover;

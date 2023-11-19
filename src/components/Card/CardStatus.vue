@@ -9,16 +9,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount } from "vue";
-
 const props = defineProps(['card']);
-
-onBeforeMount(() => {
-    if (props.card.endDate) {
-        console.log(props.card.priority);
-        console.log(props.card.endDate);
-    }
-});
 </script>
 
 <style lang="scss" scoped>

@@ -9,6 +9,8 @@ export const useMenu = defineStore('menu', () => {
   const sideBar = ref(100);
   const sidebarOpacity = ref(0);
 
+  const sort = ref('priority');
+
   const toogleSidebar = () => {
     if (!sidebarOpacity.value) {
         sideBar.value = 300;
@@ -18,7 +20,16 @@ export const useMenu = defineStore('menu', () => {
         sideBar.value = 100;
         sidebarOpacity.value = 0;
     }
-};
+  };
 
-  return { isOpen, toggle, sideBar, sidebarOpacity, toogleSidebar };
+  const setNewSort = (value) => {
+    if (sort.value === 'date' && value === sort.value) {
+      sort.value = 'endDate';
+    } else {
+      sort.value = value;
+    }
+    console.log(sort.value);
+  };
+
+  return { isOpen, toggle, sideBar, sidebarOpacity, toogleSidebar, sort, setNewSort };
 });

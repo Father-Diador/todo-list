@@ -6,7 +6,6 @@
             placeholder="Поиск"
             @input="findText"
             v-model="search"
-            disabled
         >
         <div class="search__icon">
             <img src="@/assets/icons/search.svg" alt="">

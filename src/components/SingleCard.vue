@@ -5,7 +5,9 @@
           <div class="card__content__upper">
             <div class="card__content__wrap-t">
               <CardStatus v-if="card.status" :card="card" />
-              <span class="card__content__title search-word">
+              <span class="card__content__title search-word"
+                :class="{ 'card__content__title--shirt': displayValue === 'none' }"
+              >
                 {{ card.title }}
               </span>
             </div>
@@ -294,6 +296,7 @@ const ChangeCard = (id) => {
     &__wrap-t {
       display: flex;
       flex-direction: row;
+      align-items: center;
       width: 70%;
       
       @media (max-width: 1024px) {
@@ -407,7 +410,15 @@ const ChangeCard = (id) => {
       font-weight: 600;
       word-break: break-all;
 
-      @media (min-width: 1024px) {
+      // @media (min-width: 1024px) {
+      //   margin: 10px 0;
+      //   overflow: hidden;
+      //   display: -webkit-box;
+      //   -webkit-line-clamp: 1;
+      //   -webkit-box-orient: vertical;
+      // }
+
+      &--shirt {
         margin: 10px 0;
         overflow: hidden;
         display: -webkit-box;

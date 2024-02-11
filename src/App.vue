@@ -32,7 +32,6 @@ const { isOpen } = storeToRefs(menuStore);
 const route = useRoute();
 
 const sidebar = computed(() => {
-  console.log(route.name);
   if (route.name == 'signin') {
     return false;
   }
@@ -76,5 +75,7 @@ onBeforeMount(() => {
   display: flex;
   flex-direction: row;
   gap: 25px;
+  background: url('/public/background-white.jpeg');
+  background-size: cover;
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
     <div class="signup">
-        <img class="signup__img" src="/public/atmosphere.png" />
         <div class="signup__form">
             <span class="signup__form__title">Вход</span>
             <input type="text" placeholder="Логин" v-model="data.login">
@@ -32,20 +31,15 @@ const login = () => {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: $accent-gradient;
-
-    &__img {
-        max-width: 100vw;
-        position: absolute;
-        top: 20px;
-        display: none;
-    }
+    background: url('/public/background-blue.jpeg');
+    background-size: cover;
 
     &__form {
+        background: $bg-overlay;
         position: absolute;
-        background: $bg;
+        // background: $bg;
         border-radius: 10px;
-        padding: 30px 15px;
+        padding: 70px 25px 100px 25px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -57,16 +51,17 @@ const login = () => {
         &__title {
             font-size: 24px;
             font-weight: 500;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            color: $white;
         }
 
         input {
-            width: 400px;
+            width: 300px;
             border: none;
             background: $white;
             outline: none;
             padding: 10px 20px;
-            border-radius: 10px;
+            border-radius: 2px;
             -webkit-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
             -moz-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
             box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
@@ -77,9 +72,10 @@ const login = () => {
 
         &__button {
             margin-top: 10px;
-            width: max-content;
+            // width: max-content;
+            width: 100%;
             padding: 10px 20px;
-            border-radius: 10px;
+            border-radius: 2px;
             border: none;
             background: $accent;
             color: $white;

@@ -14,7 +14,8 @@ import SingleCard from '@/components/SingleCard.vue'
 // import { useCards } from "@/stores/useCards";
 import { useMenu } from "@/stores/useMenu";
 import { storeToRefs } from "pinia";
-import { computed } from 'vue';
+import { computed, ref, onBeforeMount } from 'vue';
+import http from '@/js/http';
 
 // const cardsStore = useCards();
 // const { cards } = storeToRefs(cardsStore);

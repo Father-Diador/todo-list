@@ -9,7 +9,13 @@ const http = {
         .then((res) => {
             callback(res);
         })
-    }
+    },
+    getCards: function (callback) {
+        axios.post('localhost/8083/tasks')
+        .then((res) => {
+            callback(res);
+        })
+    },
 };
 
 export default http;

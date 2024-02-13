@@ -11,16 +11,18 @@
 
 <script setup>
 import SingleCard from '@/components/SingleCard.vue'
-import { useCards } from "@/stores/useCards";
+// import { useCards } from "@/stores/useCards";
 import { useMenu } from "@/stores/useMenu";
 import { storeToRefs } from "pinia";
 import { computed } from 'vue';
 
-const cardsStore = useCards();
-const { cards } = storeToRefs(cardsStore);
+// const cardsStore = useCards();
+// const { cards } = storeToRefs(cardsStore);
 
 const menuStore = useMenu();
 const { sort } = storeToRefs(menuStore);
+
+const cards = ref();
 
 const allCards = computed(() => {
   return cards.value.reduce((list, current) => {
@@ -30,6 +32,12 @@ const allCards = computed(() => {
     let i = [...list].sort((list1, list2) => (list1[sort.value] > list2[sort.value]) ? 1 : -1);
     return i;
   }, []);
+});
+
+onBeforeMount(() => {
+  http.getCards(data, (res) => {
+    cards.value = res.data;
+  });
 });
 </script>
 

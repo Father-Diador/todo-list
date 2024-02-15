@@ -393,14 +393,13 @@ const ChangeCard = (id) => {
       display: flex;
       justify-content: center;
       align-items: center;
-      border-right: 1px solid $line;
       height: 100%;
       margin-right: 20px;
+      font-size: 10px;
 
       @media (max-width: 1024px) {
         margin-right: 0;
         padding: 0;
-        border: none;
       }
     }
 

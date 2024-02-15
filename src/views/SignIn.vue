@@ -4,7 +4,7 @@
             <span class="signup__form__title">Вход</span>
             <input type="text" placeholder="Логин" v-model="data.login">
             <input type="password" placeholder="Пароль" v-model="data.password">
-            <button class="signup__form__button" @click="login()">Войти</button>
+            <button class="signup__form__button" @click="login">Войти</button>
         </div>
     </div>
 </template>
@@ -13,6 +13,8 @@
 import { reactive, onBeforeMount } from "vue";
 import http from "@/js/http";
 import { useRouter } from "vue-router";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
 
 const router = useRouter();
 
@@ -23,9 +25,16 @@ const data = reactive({
 
 const login = () => {
     http.auth(data, (res) => {
-        if (res.statusText == "OK") {
+        if (res.status == 200) {
+            createToast("You are logged in!", {
+                type: "success",
+            });
             localStorage.setItem("isLogged", true);
             router.push('/home');
+        } else {
+            createToast("Wow, easy", {
+                type: "Error, user not found!",
+            });
         }
     });
 };

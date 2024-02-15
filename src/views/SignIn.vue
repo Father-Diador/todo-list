@@ -32,8 +32,8 @@ const login = () => {
             localStorage.setItem("isLogged", true);
             router.push('/home');
         } else {
-            createToast("Wow, easy", {
-                type: "Error, user not found!",
+            createToast("Error, user not found!", {
+                type: "danger",
             });
         }
     });

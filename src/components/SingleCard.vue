@@ -9,9 +9,9 @@
                 :class="{ 'card__content__title--shirt': displayValue === 'none' }"
               >
                 {{ card.title }}
-                <span class="card__content__number" v-if="card.number">
-                  {{ card.number }}
-                </span>
+              </span>
+              <span class="card__content__number" v-if="card.number">
+                {{ card.number }}
               </span>
             </div>
             <div class="card__content__utils">
@@ -432,11 +432,11 @@ const ChangeCard = (id) => {
     }
 
     &__number {
-      font-size: 12px;
+      font-size: 10px;
       color: $white;
       background: #ffa500;
-      padding: 3px 4px;
-      border-radius: 4px;
+      padding: 2px;
+      border-radius: 2px;
     }
 
     &__utils {

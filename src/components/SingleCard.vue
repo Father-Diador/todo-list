@@ -433,11 +433,13 @@ const ChangeCard = (id) => {
     }
 
     &__number {
-      font-size: 10px;
+      font-size: 18px;
       color: $white;
       background: #ffa500;
       padding: 2px;
       border-radius: 2px;
+      margin-left: 10px;
+      white-space: nowrap;
     }
 
     &__utils {

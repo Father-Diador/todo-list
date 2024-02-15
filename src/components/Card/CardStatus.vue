@@ -9,21 +9,18 @@ import { computed } from "vue";
 const props = defineProps(['card']);
 
 const cardStatus = computed(() => {
-    if (props.card.status === 1) {
+    if (props.card.status === 5) {
         return 'Создано';
-    } else if (props.card.status === 2) {
+    } else if (props.card.status === 6) {
         return 'В ожидании';
-    } else if (props.card.status === 3) {
+    } else if (props.card.status === 9) {
         return 'Подтверждение';
-    } else if (props.card.status === 4) {
+    } else if (props.card.status === 7) {
         return 'В работе';
-    } else if (props.card.status === 5) {
+    } else if (props.card.status === 25) {
         return 'Выполнено';
-    } else {
+    } else if (props.card.status === 26) {
         return 'Закрыто';
     } 
 });
 </script>
-
-<style lang="scss" scoped>
-</style>

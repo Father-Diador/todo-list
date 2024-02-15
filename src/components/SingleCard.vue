@@ -389,17 +389,19 @@ const ChangeCard = (id) => {
     }
 
     &__status {
-      padding-right: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100%;
       margin-right: 20px;
-      font-size: 10px;
+      font-size: 16px;
+      padding: 3px;
+      background: $accent;
+      border-radius: 4px;
+      color: $white;
 
       @media (max-width: 1024px) {
         margin-right: 0;
-        padding: 0;
       }
     }
 

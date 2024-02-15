@@ -10,8 +10,12 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, onBeforeMount } from "vue";
 import http from "@/js/http";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 const data = reactive({
     login: '',
     password: '',
@@ -19,9 +23,18 @@ const data = reactive({
 
 const login = () => {
     http.auth(data, (res) => {
-        console.log(res);
+        if (res.statusText == "OK") {
+            localStorage.setItem("isLogged", true);
+            router.push('/home');
+        }
     });
 };
+
+onBeforeMount(() => {
+  if (JSON.parse(localStorage.getItem('isLogged'))) {
+    router.push('/home');
+  }
+});
 </script>
 
 <style lang="scss" scoped>

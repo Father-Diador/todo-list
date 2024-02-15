@@ -11,7 +11,7 @@ const http = {
         })
     },
     getCards: function (callback) {
-        axios.post('localhost/8083/tasks')
+        axios.get('http://localhost/8083/tasks')
         .then((res) => {
             callback(res);
         })

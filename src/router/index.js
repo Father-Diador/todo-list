@@ -8,18 +8,32 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'signin',
+      component: SignIn,
+    },
+    {
+      path: '/home',
       name: 'home',
       component: HomeView,
+      beforeEnter: (to, from, next) => {
+        if (JSON.parse(localStorage.getItem('isLogged'))) {
+          next();
+        } else {
+          next("/");
+        }
+      },
     },
     {
       path: '/donecards',
       name: 'donecards',
       component: DoneCards,
-    },
-    {
-      path: '/signin',
-      name: 'signin',
-      component: SignIn,
+      beforeEnter: (to, from, next) => {
+        if (JSON.parse(localStorage.getItem('isLogged'))) {
+          next();
+        } else {
+          next("/");
+        }
+      },
     },
   ]
 })

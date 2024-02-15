@@ -57,17 +57,6 @@ const dashboard = computed(() => {
     return true;
   }
 });
-
-onBeforeMount(() => {
-  if (!JSON.parse(localStorage.getItem('allCards'))) {
-    localStorage.setItem("allCards", JSON.stringify(cards));
-    localStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
-  } else {
-    cardPush(JSON.parse(localStorage.getItem('allCards')));
-    optionsPush(JSON.parse(localStorage.getItem('selectedOptions')))
-    
-  }
-});
 </script>
 
 <style lang="scss" scoped>

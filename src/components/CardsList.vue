@@ -11,12 +11,12 @@
 
 <script setup>
 import SingleCard from '@/components/SingleCard.vue'
-import { useCards } from "@/stores/useCards";
+import { useLocalCards } from "@/stores/useLocalCards";
 import { useMenu } from "@/stores/useMenu";
 import { storeToRefs } from "pinia";
 import { computed } from 'vue';
 
-const cardsStore = useCards();
+const cardsStore = useLocalCards();
 const { cards } = storeToRefs(cardsStore);
 
 const menuStore = useMenu();

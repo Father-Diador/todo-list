@@ -1,20 +1,26 @@
 <template>
     <div class="card__content__status">
-        <template v-if="card.status === 1">
-            <img v-if="card.priority == 1" class="status-icon" src="@/assets/icons/status-flash.svg" alt="">
-            <img v-else class="status-icon" src="@/assets/icons/status-proccess.svg" alt="">
-        </template>
-        <img v-if="card.status === 2" class="status-icon" src="@/assets/icons/status-done.svg" alt="">
+        {{ cardStatus }}
     </div>
 </template>
 
 <script setup>
+import { computed } from "vue";
 const props = defineProps(['card']);
-</script>
 
-<style lang="scss" scoped>
-.status-icon {
-    width: 40px;
-    height: 40px;
-}
-</style>
+const cardStatus = computed(() => {
+    if (props.card.status === 5) {
+        return 'Создано';
+    } else if (props.card.status === 6) {
+        return 'В ожидании';
+    } else if (props.card.status === 9) {
+        return 'Подтверждение';
+    } else if (props.card.status === 7) {
+        return 'В работе';
+    } else if (props.card.status === 25) {
+        return 'Выполнено';
+    } else if (props.card.status === 26) {
+        return 'Закрыто';
+    } 
+});
+</script>

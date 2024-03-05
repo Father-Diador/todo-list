@@ -3,7 +3,7 @@
         <div class="header__sidebar" @click="toogleSide">
             <img src="@/assets/icons/sidebar-icon.png" alt="">
         </div>
-        <div class="header__search">
+        <div v-if="route.name !== 'localcards'" class="header__search">
             <Search />
         </div>
         <div class="header__date">
@@ -21,7 +21,9 @@
 import { ref } from "vue";
 import { useMenu } from "@/stores/useMenu";
 import Search from "@/components/Search.vue"
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const menuStore = useMenu();
 const { toggle, toogleSidebar } = menuStore;
 const toggleMenu = () => { toggle() };

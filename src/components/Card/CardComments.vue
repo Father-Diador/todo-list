@@ -42,7 +42,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useCards } from "@/stores/useCards";
+import { useLocalCards } from "@/stores/useLocalCards";
 
 const props = defineProps(['card', 'cardComments']);
 
@@ -59,7 +59,7 @@ const showComments = ref(true);
 //     }
 // };
 
-const cardsStore = useCards();
+const cardsStore = useLocalCards();
 const { setComment } = cardsStore;
 
 const comment = ref(null);

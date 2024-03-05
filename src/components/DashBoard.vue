@@ -3,7 +3,10 @@
         class="dashboard__wrapper"
         :style="{ width: dashBoard + 'px' }"
     >
-        <div class="btn-default" @click="del">
+        <div
+            v-if="route.name == 'localcards'"
+            class="btn-default" @click="del"
+        >
             <span class="btn-default__plus">
                 <img src="@/assets/icons/delete-cards.svg" alt="">
             </span>
@@ -18,10 +21,12 @@
 <script setup>
 import CardComments from "@/components/Card/CardComments.vue"
 import { computed, ref, watch } from "vue";
-import { useCards } from "@/stores/useCards";
+import { useLocalCards } from "@/stores/useLocalCards";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 
-const menuStore = useCards();
+const route = useRoute();
+const menuStore = useLocalCards();
 const { commentsForCard } = storeToRefs(menuStore);
 
 const dashBoard = ref(100);

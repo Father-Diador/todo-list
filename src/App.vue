@@ -45,7 +45,6 @@ onBeforeMount(() => {
   } else {
     cardPush(JSON.parse(localStorage.getItem('LocalCards')));
     optionsPush(JSON.parse(localStorage.getItem('selectedOptions')))
-    
   }
 });
 </script>

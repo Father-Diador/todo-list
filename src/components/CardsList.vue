@@ -2,7 +2,7 @@
   <div class="cards">
     <span class="cards__title">В работе</span>
     <SingleCard 
-      v-for="card in allCards" 
+      v-for="card in cards" 
       :key="card.id"
       :card="card"
     />
@@ -12,9 +12,11 @@
 <script setup>
 import SingleCard from '@/components/SingleCard.vue'
 import { useLocalCards } from "@/stores/useLocalCards";
+
 import { useMenu } from "@/stores/useMenu";
 import { storeToRefs } from "pinia";
-import { computed } from 'vue';
+import { computed, ref, onBeforeMount } from 'vue';
+import http from '@/js/http';
 
 const cardsStore = useLocalCards();
 const { cards } = storeToRefs(cardsStore);
@@ -22,14 +24,22 @@ const { cards } = storeToRefs(cardsStore);
 const menuStore = useMenu();
 const { sort } = storeToRefs(menuStore);
 
-const allCards = computed(() => {
-  return cards.value.reduce((list, current) => {
-    if (current.status === 1) {
-      list.push(current)
-    }
-    let i = [...list].sort((list1, list2) => (list1[sort.value] > list2[sort.value]) ? 1 : -1);
-    return i;
-  }, []);
+const cards = ref();
+
+// const allCards = computed(() => {
+//   return cards.value.reduce((list, current) => {
+//     if (current.status === 1) {
+//       list.push(current)
+//     }
+//     let i = [...list].sort((list1, list2) => (list1[sort.value] > list2[sort.value]) ? 1 : -1);
+//     return i;
+//   }, []);
+// });
+
+onBeforeMount(() => {
+  http.getCards((res) => {
+    cards.value = res.data;
+  });
 });
 </script>
 

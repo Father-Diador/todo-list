@@ -10,6 +10,9 @@
               >
                 {{ card.title }}
               </span>
+              <span class="card__content__number" v-if="card.number">
+                {{ card.number }}
+              </span>
             </div>
             <div class="card__content__utils">
               <CardPriority
@@ -470,6 +473,7 @@ const ChangeCard = (id) => {
       color: $third-color;
       font-weight: 600;
       word-break: break-all;
+      gap: 10px;
 
       // @media (min-width: 1024px) {
       //   margin: 10px 0;
@@ -486,6 +490,16 @@ const ChangeCard = (id) => {
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
       }
+    }
+
+    &__number {
+      font-size: 18px;
+      color: $white;
+      background: #ffa500;
+      padding: 2px;
+      border-radius: 2px;
+      margin-left: 10px;
+      white-space: nowrap;
     }
 
     &__utils {

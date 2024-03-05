@@ -29,8 +29,14 @@ const login = () => {
             createToast("You are logged in!", {
                 type: "success",
             });
-            localStorage.setItem("isLogged", true);
-            router.push('/home');
+
+            let now = new Date();
+            let time = now.getTime();
+            let expireTime = time + 1000*36000;
+            now.setTime(expireTime);
+            document.cookie = 'cookie=logged;expires='+now.toUTCString()+';path=/';
+
+            router.push('/allcards');
         } else {
             createToast("Error, user not found!", {
                 type: "danger",
@@ -40,8 +46,8 @@ const login = () => {
 };
 
 onBeforeMount(() => {
-  if (JSON.parse(localStorage.getItem('isLogged'))) {
-    router.push('/home');
+  if (document.cookie) {
+    router.push('/allcards');
   }
 });
 </script>
@@ -53,8 +59,8 @@ onBeforeMount(() => {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('/public/background-blue.jpeg');
-    background-size: cover;
+    // background: url('/public/background-blue.jpeg');
+    // background-size: cover;
 
     &__form {
         background: $bg-overlay;

@@ -2,7 +2,7 @@
     <div class="cards">
       <span class="cards__title">Закрытые</span>
       <SingleCard 
-        v-for="card in allCards" 
+        v-for="card in allCards"
         :key="card.id"
         :card="card"
       />
@@ -12,18 +12,18 @@
   <script setup>
   import SingleCard from '@/components/SingleCard.vue'
   import { useMenu } from "@/stores/useMenu";
-  import { useCards } from "@/stores/useCards";
+  import { useLocalCards } from "@/stores/useLocalCards";
   import { storeToRefs } from "pinia";
   import { computed } from "vue";
   
   const menuStore = useMenu();
   const { sort } = storeToRefs(menuStore);
   
-  const cardsStore = useCards();
-  const { cards } = storeToRefs(cardsStore);
+  const cardsStore = useLocalCards();
+  const { localCards } = storeToRefs(cardsStore);
   
   const allCards = computed(() => {
-  return cards.value.reduce((list, current) => {
+  return localCards.value.reduce((list, current) => {
     if (current.status === 2) {
       list.push(current)
     }

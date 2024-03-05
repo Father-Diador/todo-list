@@ -19,60 +19,71 @@
                 :priority="card.priority"
                 class="card__content__utils__priority search-word"
               />
-              <div
-                v-if="card.status != 2"
-                class="card__content__utils__comments"
-                @click.stop="showComments()"
-              >
-                <img src="@/assets/icons/comments.svg" />
+              <div class="card__content__numbers">
+                <span class="card__content__number" v-if="card.number">
+                  {{ card.number }}
+                </span>
+                <span class="card__content__parentnumber" v-if="card.parentNumber">
+                  {{ card.parentNumber }}
+                </span>
               </div>
-              <div
-                v-if="card.status != 2"
-                class="card__menu"
-                @mouseover.stop="toggleCardMenu"
-                @mouseout.stop="toggleCardMenu"
-                @click.stop
-              >
+              <div class="card__content__utils__position">
                 <div
-                  class="card__menu__add-btn"
-                  :style="{ borderRadius:menuRadius }"
+                  v-if="card.status != 2"
+                  class="card__content__utils__comments"
+                  @click.stop="showComments()"
                 >
-                  <img class="svg-icon" src="@/assets/icons/settings.svg" alt="" :style="{  transform: menuChevron }">
+                  <img src="@/assets/icons/comments.svg" />
                 </div>
-                <div class="card__menu__link" :style="{ display: menu }">
-                  <div
-                    class="card__menu__link-content"
-                    @click.stop="setChildCard(card.id)"
-                  >
-                    <img class="svg-icon" src="@/assets/icons/add.svg" alt="">
-                  </div>
-                  <div
-                    class="card__menu__link-content"
-                    @click.stop="editCard(card)"
-                  >
-                    <img class="svg-icon" src="@/assets/icons/edit.svg" alt="">
-                  </div>
-                  <!-- <div
-                    class="card__menu__link-content"
-                    @click.stop="deleteCard(card.id)"
-                  >
-                    <img class="svg-icon" src="@/assets/icons/delete.svg" alt="">
-                  </div> -->
-                  <div
-                    class="card__menu__link-content"
-                    @click.stop="ChangeCard(card.id)"
-                  >
-                    <img
-                      class="svg-icon"
-                      src="@/assets/icons/done.svg"
-                      alt="Добавить"
-                    >
-                  </div>
-                </div>
-              </div>
-              <div class="card__content__chevron">
                 <div
-                  v-if="card.subordinates.length"
+                  v-if="card.status != 2"
+                  class="card__menu"
+                  @mouseover.stop="toggleCardMenu"
+                  @mouseout.stop="toggleCardMenu"
+                  @click.stop
+                >
+                  <div
+                    class="card__menu__add-btn"
+                    :style="{ borderRadius:menuRadius }"
+                  >
+                    <img class="svg-icon" src="@/assets/icons/settings.svg" alt="" :style="{  transform: menuChevron }">
+                  </div>
+                  <div class="card__menu__link" :style="{ display: menu }">
+                    <div
+                      class="card__menu__link-content"
+                      @click.stop="setChildCard(card.id)"
+                    >
+                      <img class="svg-icon" src="@/assets/icons/add.svg" alt="">
+                    </div>
+                    <div
+                      class="card__menu__link-content"
+                      @click.stop="editCard(card)"
+                    >
+                      <img class="svg-icon" src="@/assets/icons/edit.svg" alt="">
+                    </div>
+                    <div
+                      class="card__menu__link-content"
+                      @click.stop="deleteCard(card)"
+                    >
+                      <img class="svg-icon" src="@/assets/icons/delete.svg" alt="">
+                    </div>
+                    <div
+                      class="card__menu__link-content"
+                      @click.stop="ChangeCard(card.id)"
+                    >
+                      <img
+                        class="svg-icon"
+                        src="@/assets/icons/done.svg"
+                        alt="Добавить"
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div
+                v-if="card.subordinates.length"
+                class="card__content__chevron"
+              >
+                <div
                   @click.stop="toogleChildCards"
                   class="card__content__chevron__content"
                 >
@@ -83,6 +94,7 @@
                     :style="{  transform: menuChevronTwo }"
                   >
                 </div>
+              </div>
               </div>
             </div>
           </div>
@@ -126,15 +138,22 @@
 
 <script setup>
 import Icon from "@/components/shared/SvgIcon.vue"
+import http from '@/js/http';
 import CardStatus from "@/components/Card/CardStatus.vue"
 import CardTags from "@/components/Card/CardTags.vue"
 import CardPriority from "@/components/Card/CardPriority.vue"
 import { useMenu } from "@/stores/useMenu";
-import { useCards } from "@/stores/useCards";
+import { useLocalCards } from "@/stores/useLocalCards";
 import { ref, computed } from "vue";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
+import { useCards } from "@/stores/useCards";
 
-const cardsStore = useCards();
-const { setSelectedCard, changeCardStatus, setEditedCard, setCommentsForCard } = cardsStore;
+const allCardsStore = useCards();
+const { setCards } = allCardsStore;
+
+const cardsStore = useLocalCards();
+const { setSelectedCard, changeCardStatus, setEditedCard, setCommentsForCard, setDeleteCard } = cardsStore;
 
 const props = defineProps(['card']);
 
@@ -203,9 +222,26 @@ const editCard = (card) => {
   toggle();
 };
 
-// const deleteCard = (id) => {
-//   console.log(id);
-// };
+const deleteCard = (card) => {
+  if (card.isLocale) {
+    setDeleteCard(card.id);
+  } else {
+    http.deleteCard(card.id, (res) => {
+      if (res.error) {
+        createToast("Error!", {
+          type: "danger",
+        });
+      } else {
+        createToast("Success!", {
+          type: "success",
+        });
+      }
+    });
+    http.getCards((res) => {
+      setCards(res);
+    });
+  }
+};
 
 const ChangeCard = (id) => {
   changeCardStatus(id);
@@ -233,7 +269,6 @@ const ChangeCard = (id) => {
     position: relative;
     
     @media (max-width: 1024px) {
-      width: 33%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -405,7 +440,32 @@ const ChangeCard = (id) => {
       }
     }
 
+    &__numbers {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    &__number {
+      font-size: 16px;
+      color: $white;
+      background: #ffa500;
+      padding: 3px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    &__parentnumber {
+      font-size: 16px;
+      color: $white;
+      background: #d630c8;
+      padding: 3px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
     &__title {
+      margin: 10px 0;
       display: flex;
       align-items: center;
       width: 100%;
@@ -443,17 +503,21 @@ const ChangeCard = (id) => {
     }
 
     &__utils {
-      max-width: 250px;
-      width: 250px;
+      // max-width: 250px;
+      // width: 250px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: flex-end;
       gap: 20px;
 
+      &__position {
+        display: flex;
+        gap: 10px;
+      }
+
       &__priority {
         @media (max-width: 1024px) {
-          width: 33%;
           display: flex;
           justify-content: flex-start;
           align-items: center;
@@ -484,15 +548,23 @@ const ChangeCard = (id) => {
       }
       
       @media (max-width: 1024px) {
-        justify-content: space-between;
+        // justify-content: space-between;
         max-width: 100%;
         width: 100%;
+      }
+
+      @media (max-width: 767px) {
+        flex-direction: column;
+      }
+
+      @media (max-width: 425px) {
+        justify-content: flex-start;
+        flex-wrap: wrap;
       }
     }
 
     &__chevron {
       @media (max-width: 1024px) {
-        width: 33%;
         display: flex;
         justify-content: flex-end;
         align-items: center;

@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import DoneCards from '../views/DoneCards.vue'
 import SignIn from '../views/SignIn.vue'
+import AllCards from '../views/AllCards.vue'
+import DoneCards from '../views/DoneCards.vue'
+import LocalCards from '../views/LocalCards.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,11 +13,11 @@ const router = createRouter({
       component: SignIn,
     },
     {
-      path: '/home',
-      name: 'home',
-      component: HomeView,
+      path: '/allcards',
+      name: 'allcards',
+      component: AllCards,
       beforeEnter: (to, from, next) => {
-        if (JSON.parse(localStorage.getItem('isLogged'))) {
+        if (document.cookie) {
           next();
         } else {
           next("/");
@@ -28,7 +29,19 @@ const router = createRouter({
       name: 'donecards',
       component: DoneCards,
       beforeEnter: (to, from, next) => {
-        if (JSON.parse(localStorage.getItem('isLogged'))) {
+        if (document.cookie) {
+          next();
+        } else {
+          next("/");
+        }
+      },
+    },
+    {
+      path: '/localcards',
+      name: 'localcards',
+      component: LocalCards,
+      beforeEnter: (to, from, next) => {
+        if (document.cookie) {
           next();
         } else {
           next("/");

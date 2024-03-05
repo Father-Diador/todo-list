@@ -11,23 +11,32 @@
 
 <script setup>
 import SingleCard from '@/components/SingleCard.vue'
-import { useLocalCards } from "@/stores/useLocalCards";
-
-import { useMenu } from "@/stores/useMenu";
 import { storeToRefs } from "pinia";
-import { computed, ref, onBeforeMount } from 'vue';
 import http from '@/js/http';
+import { computed, onBeforeMount } from 'vue';
 
-const cardsStore = useLocalCards();
-const { cards } = storeToRefs(cardsStore);
+import { useCards } from "@/stores/useCards";
+const allCardsStore = useCards();
+const { allCards } = storeToRefs(allCardsStore);
+const { setCards } = allCardsStore;
 
-const menuStore = useMenu();
-const { sort } = storeToRefs(menuStore);
+const cards = computed(() => {
+  return allCards.value;
+});
 
-const cards = ref();
+// import { useLocalCards } from "@/stores/useLocalCards";
+// import { useMenu } from "@/stores/useMenu";
+// import { storeToRefs } from "pinia";
+// import { computed } from 'vue';
+
+// const cardsStore = useLocalCards();
+// const { localCards } = storeToRefs(cardsStore);
+
+// const menuStore = useMenu();
+// const { sort } = storeToRefs(menuStore);
 
 // const allCards = computed(() => {
-//   return cards.value.reduce((list, current) => {
+//   return localCards.value.reduce((list, current) => {
 //     if (current.status === 1) {
 //       list.push(current)
 //     }
@@ -38,9 +47,10 @@ const cards = ref();
 
 onBeforeMount(() => {
   http.getCards((res) => {
-    cards.value = res.data;
+    setCards(res);
   });
 });
+
 </script>
 
 <style lang="scss" scoped>

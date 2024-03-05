@@ -10,6 +10,15 @@
       </div>
 
       <div class="form__main-block">
+        <div v-if="localStatus" class="form__checkbox">
+          <input type="checkbox" v-model="isLocale">
+          <label
+            class="form__input-pos__label"
+            for="title"
+          >
+            Локально
+          </label>
+        </div>
         <div class="form__input-pos">
           <label
             class="form__input-pos__label"
@@ -143,18 +152,29 @@
 </template>
 
 <script setup>
+import http from '@/js/http';
 import { useMenu } from "@/stores/useMenu";
-import { useCards } from "@/stores/useCards";
+import { useLocalCards } from "@/stores/useLocalCards";
 import { onBeforeMount, reactive, ref } from "vue";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
+import { useCards } from "@/stores/useCards";
+
+const allCardsStore = useCards();
+const { setCards } = allCardsStore;
 
 //стор на открытие меню
 const menuStore = useMenu();
 const { toggle } = menuStore;
-const toggleMenu = () => { toggle() };
+const toggleMenu = () => {
+  localStatus.value = true;
+  setEditedCard(null);
+  toggle();
+};
 
 //стор на создание карт
-const cardsStore = useCards();
-const { setCard, editedCard, editCard } = cardsStore;
+const cardsStore = useLocalCards();
+const { setCard, editedCard, editCard, setEditedCard } = cardsStore;
 const cardPush = (value) => { setCard(value) };
 
 let card = reactive({
@@ -169,6 +189,9 @@ let card = reactive({
   date: '',
   endDate: '',
 });
+
+const localStatus = ref(true);
+const isLocale = ref(false);
 
 const tags = ref(false);
 const tag = reactive({
@@ -186,8 +209,6 @@ const post = reactive({
 
 const addCard = () => {
   if (card.title !== '' && card.description !== '') {
-
-    card.id = Date.now();
 
     // получение текущей даты
     let today = new Date();
@@ -207,8 +228,27 @@ const addCard = () => {
       card.endDate = 'Не выбрано';
     }
 
-    // пуш в массив с карточками
-    cardPush(card);
+    // проверка на локальность задачи
+    if (isLocale.value) {
+      card.id = Date.now();
+      // пуш в массив с карточками локально
+      cardPush(card);
+    } else {
+      http.saveCard(card, (res) => {
+        if (res.error) {
+          createToast("Error!", {
+            type: "danger",
+          });
+        } else {
+          createToast("Success!", {
+            type: "success",
+          });
+        }
+      });
+      http.getCards((res) => {
+        setCards(res);
+      });
+    }
     
     // очистка полей
     card = {};
@@ -218,8 +258,23 @@ const addCard = () => {
   }
 };
 
+// сохранение изменений карточки
 const saveCard = () => {
-  editCard(card);
+  if (isLocale.value) {
+    editCard(card);
+  } else {
+    http.editCard(card, (res) => {
+      if (res.error) {
+        createToast("Error!", {
+          type: "danger",
+        });
+      } else {
+        createToast("Success!", {
+          type: "success",
+        });
+      }
+    });
+  }
   toggleMenu();
 };
 
@@ -243,6 +298,8 @@ const addPost = () => {
 
 const checkIsEdit = () => {
   if (editedCard) {
+    localStatus.value = false;
+
     card.id = editedCard.id;
     card.priority = editedCard.priority;
     card.title = editedCard.title;
@@ -280,7 +337,7 @@ onBeforeMount(() => {
   padding: 40px 20px;
   border-radius: 10px;
   background: $white;
-  gap: 30px;
+  gap: 20px;
   max-height: calc(100vh - 200px);
   overflow-y: auto;
   
@@ -293,7 +350,7 @@ onBeforeMount(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 10px;
 
     &::-webkit-scrollbar { display: none; }
   }
@@ -426,6 +483,24 @@ onBeforeMount(() => {
 
     &:hover {
       background: $accent-hover;
+    }
+  }
+  
+  &__checkbox {
+    width: 100%;
+    cursor: pointer;
+    display: inline-flex;
+    padding: 10px;
+    border-radius: 10px;
+    justify-content: flex-start;
+    gap: 5px;
+    align-items: center;
+    transition: 0.3s;
+
+    input {
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
     }
   }
 

@@ -230,6 +230,7 @@ const addCard = () => {
 
     // проверка на локальность задачи
     if (isLocale.value) {
+      card.isLocale = isLocale.value;
       card.id = Date.now();
       // пуш в массив с карточками локально
       cardPush(card);
@@ -243,10 +244,10 @@ const addCard = () => {
           createToast("Success!", {
             type: "success",
           });
+          http.getCards((res) => {
+            setCards(res);
+          });
         }
-      });
-      http.getCards((res) => {
-        setCards(res);
       });
     }
     
@@ -271,6 +272,9 @@ const saveCard = () => {
       } else {
         createToast("Success!", {
           type: "success",
+        });
+        http.getCards((res) => {
+          setCards(res);
         });
       }
     });
@@ -299,7 +303,9 @@ const addPost = () => {
 const checkIsEdit = () => {
   if (editedCard) {
     localStatus.value = false;
-
+    if (editedCard.isLocale) {
+      card.isLocale = editedCard.isLocale;
+    }
     card.id = editedCard.id;
     card.priority = editedCard.priority;
     card.title = editedCard.title;

@@ -10,9 +10,6 @@
               >
                 {{ card.title }}
               </span>
-              <span class="card__content__number" v-if="card.number">
-                {{ card.number }}
-              </span>
             </div>
             <div class="card__content__utils">
               <CardPriority
@@ -235,10 +232,10 @@ const deleteCard = (card) => {
         createToast("Success!", {
           type: "success",
         });
+        http.getCards((res) => {
+          setCards(res);
+        });
       }
-    });
-    http.getCards((res) => {
-      setCards(res);
     });
   }
 };

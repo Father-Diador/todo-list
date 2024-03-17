@@ -2,7 +2,7 @@
     <div class="cards">
       <span class="cards__title">Закрытые</span>
       <SingleCard 
-        v-for="card in allCards"
+        v-for="card in DoneCards"
         :key="card.id"
         :card="card"
       />
@@ -22,7 +22,7 @@
   const cardsStore = useLocalCards();
   const { localCards } = storeToRefs(cardsStore);
   
-  const allCards = computed(() => {
+  const DoneCards = computed(() => {
   return localCards.value.reduce((list, current) => {
     if (current.status === 2) {
       list.push(current)

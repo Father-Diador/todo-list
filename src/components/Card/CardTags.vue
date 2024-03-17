@@ -6,7 +6,7 @@
         <div
             v-for="tag in tags"
             :key="tag"
-            class="tags__content search-word"
+            class="tags__content"
             :style="{ background: tag.color }"
             @click.stop="search(tag.title)"
         >

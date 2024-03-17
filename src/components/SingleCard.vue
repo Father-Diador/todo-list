@@ -444,6 +444,7 @@ const ChangeCard = (id) => {
     }
 
     &__number {
+      text-align: center;
       font-size: 16px;
       color: $white;
       background: #ffa500;
@@ -453,6 +454,7 @@ const ChangeCard = (id) => {
     }
 
     &__parentnumber {
+      text-align: center;
       font-size: 16px;
       color: $white;
       background: #d630c8;
@@ -487,16 +489,6 @@ const ChangeCard = (id) => {
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
       }
-    }
-
-    &__number {
-      font-size: 18px;
-      color: $white;
-      background: #ffa500;
-      padding: 2px;
-      border-radius: 2px;
-      margin-left: 10px;
-      white-space: nowrap;
     }
 
     &__utils {

@@ -174,7 +174,7 @@ const toggleMenu = () => {
 
 //стор на создание карт
 const cardsStore = useLocalCards();
-const { setCard, editedCard, editCard, setEditedCard } = cardsStore;
+const { setCard, editedCard, selectedCard, editCard, setEditedCard } = cardsStore;
 const cardPush = (value) => { setCard(value) };
 
 let card = reactive({
@@ -228,6 +228,10 @@ const addCard = () => {
       card.endDate = 'Не выбрано';
     }
 
+    if(selectedCard) {
+      card.selectedCard = selectedCard;
+    }
+
     // проверка на локальность задачи
     if (isLocale.value) {
       card.isLocale = isLocale.value;
@@ -235,20 +239,37 @@ const addCard = () => {
       // пуш в массив с карточками локально
       cardPush(card);
     } else {
-      http.saveCard(card, (res) => {
-        if (res.error) {
-          createToast("Error!", {
-            type: "danger",
-          });
-        } else {
-          createToast("Success!", {
-            type: "success",
-          });
-          http.getCards((res) => {
-            setCards(res);
-          });
-        }
-      });
+      if (card.selectedCard) {
+        http.editCard(card.selectedCard, card, (res) => {
+          if (res.error) {
+            createToast("Error!", {
+              type: "danger",
+            });
+          } else {
+            createToast("Success!", {
+              type: "success",
+            });
+            http.getCards((res) => {
+              setCards(res);
+            });
+          }
+        });
+      } else {
+        http.saveCard(card, (res) => {
+          if (res.error) {
+            createToast("Error!", {
+              type: "danger",
+            });
+          } else {
+            createToast("Success!", {
+              type: "success",
+            });
+            http.getCards((res) => {
+              setCards(res);
+            });
+          }
+        });
+      }
     }
     
     // очистка полей
@@ -261,10 +282,11 @@ const addCard = () => {
 
 // сохранение изменений карточки
 const saveCard = () => {
-  if (isLocale.value) {
+  console.log(card);
+  if (card.isLocale) {
     editCard(card);
   } else {
-    http.editCard(card, (res) => {
+    http.editCard(card.id, card, (res) => {
       if (res.error) {
         createToast("Error!", {
           type: "danger",

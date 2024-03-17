@@ -87,7 +87,7 @@ const addComment = () => {
     let params = { id: Date.now(), date: today, value: comment.value };
 
     props.card.comments.push(params);
-    http.editCard(props.card, (res) => {
+    http.editCard(props.card.id, props.card, (res) => {
       if (res.error) {
         createToast("Error!", {
           type: "danger",

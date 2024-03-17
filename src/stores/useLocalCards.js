@@ -29,7 +29,9 @@ export const useLocalCards = defineStore('useLocalCards', () => {
     return false
   };
 
+  // Добавление комментариев
   const setComment = (params) => {
+    console.log("Добавление комментариев карточки");
     console.log(params);
     let card = findById(localCards.value, Number(params.card_id));
     console.log(card);
@@ -46,6 +48,7 @@ export const useLocalCards = defineStore('useLocalCards', () => {
 
   // Добавление карточки
   const setCard = (card) => {
+    console.log("Создание карточки");
     if(selectedCard.value) {
       card.selectedCard = selectedCard.value;
     }
@@ -72,6 +75,7 @@ export const useLocalCards = defineStore('useLocalCards', () => {
 
   // Изменение статуса карточки
   const changeCardStatus = (card) => {
+    console.log("Изменение статуса карточки");
     let head = findById(localCards.value, Number(card));
     if (!head) {
       console.error("head not found: " + card.selectedCard);
@@ -83,6 +87,7 @@ export const useLocalCards = defineStore('useLocalCards', () => {
 
   // Изменение карточки
   const editCard = (card) => {
+    console.log("Изменение карточки");
     console.log(card);
     let head = findById(localCards.value, Number(card.id));
     console.log(head);
@@ -91,7 +96,6 @@ export const useLocalCards = defineStore('useLocalCards', () => {
       return;
     }
     editedCard.value = null;
-    // head = card;
     head.id = card.id;
     head.priority = card.priority;
     head.title = card.title;
@@ -127,55 +131,10 @@ export const useLocalCards = defineStore('useLocalCards', () => {
     editedCard.value = value;
   };
 
-  const deleteById = (tree, nodeId) => {
-    console.log(tree);
-    for (let node of tree) {
-      console.log(node.id + ": " + nodeId);
-        if (node.id === nodeId) {
-          node = null;
-          return
-        }
-        let subordinates = node.subordinates;
-        if (!subordinates) continue;
-        if (subordinates.length > 0) {
-          let desiredNode = deleteById(subordinates, nodeId)
-          if (desiredNode) return desiredNode
-        } else {
-          continue;
-        }
-    }
-  };
 
   const setDeleteCard = (value) => {
-    localCards.value = deleteById(localCards.value, value);
-    console.log(localCards.value);
-    // console.log(newArray.value.flat());
-
-    // const deletee = (i) => {
-    //   i = i.filter((el) => {
-    //     if (el.id != value) {
-    //       console.log(el.id + ":" + value);
-    //       let subordinates = el.subordinates;
-    //       if (subordinates.length > 0) {
-    //         let desiredNode = deletee(subordinates)
-    //         if (desiredNode) {
-    //           console.log(desiredNode);
-    //           return desiredNode;
-    //         }
-    //       }
-    //       return el;
-    //     }
-    //   });
-    //   console.log(i);
-    // };
-
-    // deletee(newArray.value);
-    // localCards.value = deletee(newArray.value);
-    // console.log(newArray.value);
-
-    // localStorage.setItem("allCards", JSON.stringify(localCards.value));
-
-    // console.log(newArray.value);
+    console.log("Удаление карточки");
+    console.log(value);
   };
 
   return { localCards, setDeleteCard, setCommentsForCard, commentsForCard, inactiveCards, selectedCard, editedCard, selectedOptions, editCard, changeCardStatus, setCard, setCardFromStorage, setOptionFromStorage, setSelectedCard, setEditedCard, setComment };

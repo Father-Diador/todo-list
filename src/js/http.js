@@ -28,8 +28,8 @@ const http = {
             callback(res);
         })
     },
-    editCard: function (params, callback) {
-        axios.patch(`http://localhost:8083/update/tasks/${params.id}`, params)
+    editCard: function (id, params, callback) {
+        axios.patch(`http://localhost:8083/update/tasks/${id}`, params)
         .then((res) => {
             callback(res);
         })

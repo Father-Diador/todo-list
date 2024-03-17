@@ -39,7 +39,7 @@ export const useLocalCards = defineStore('useLocalCards', () => {
     let year = today.getFullYear();
     today = year + '-' + month + '-' + day;
 
-    const comment = { id: Date.now(), date: today, value: params.comment } ;
+    const comment = { id: Date.now(), date: today, value: params.comment };
     card.comments.push(comment);
     localStorage.setItem("LocalCards", JSON.stringify(localCards.value));
   };

@@ -42,7 +42,14 @@
 
 <script setup>
 import { ref } from "vue";
+import http from '@/js/http';
 import { useLocalCards } from "@/stores/useLocalCards";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
+import { useCards } from "@/stores/useCards";
+
+const allCardsStore = useCards();
+const { setCards } = allCardsStore;
 
 const props = defineProps(['card', 'cardComments']);
 
@@ -67,8 +74,34 @@ const addComment = () => {
   if (!comment.value.length) {
     return;
   }
-  let params = { comment: comment.value, card_id: props.card.id }
-  setComment(params);
+  if (props.card.isLocale) {
+    let params = { comment: comment.value, card_id: props.card.id }
+    setComment(params);
+  } else {
+    let today = new Date();
+    let day = String(today.getDate()).padStart(2, '0');
+    let month = String(today.getMonth() + 1).padStart(2, '0');
+    let year = today.getFullYear();
+    today = year + '-' + month + '-' + day;
+
+    let params = { id: Date.now(), date: today, value: comment.value };
+
+    props.card.comments.push(params);
+    http.editCard(props.card, (res) => {
+      if (res.error) {
+        createToast("Error!", {
+          type: "danger",
+        });
+      } else {
+        createToast("Success!", {
+          type: "success",
+        });
+        http.getCards((res) => {
+          setCards(res);
+        });
+      }
+    });
+  }
   comment.value = null;
 };
 </script>

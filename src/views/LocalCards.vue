@@ -1,6 +1,7 @@
 <template>
   <div class="cards">
     <span class="cards__title">Локальные</span>
+    <Loader />
     <SingleCard 
       v-for="card in sortedLocalCards" 
       :key="card.id"
@@ -11,6 +12,7 @@
 
 <script setup>
 import SingleCard from '@/components/SingleCard.vue'
+import Loader from "@/components/Loader.vue";
 import { useLocalCards } from "@/stores/useLocalCards";
 import { storeToRefs } from "pinia";
 import { computed } from 'vue';

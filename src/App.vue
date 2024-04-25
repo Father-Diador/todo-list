@@ -20,8 +20,11 @@ import { storeToRefs } from "pinia";
 import { useMenu } from "@/stores/useMenu";
 import { useLocalCards } from "@/stores/useLocalCards";
 import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const route = useRoute();
+
 const disablePage = computed(() => {
   if (route.name == 'signin') {
     return true;
@@ -39,6 +42,14 @@ const menuStore = useMenu();
 const { isOpen } = storeToRefs(menuStore);
 
 onBeforeMount(() => {
+  let now = new Date();
+  let exp_date = localStorage.getItem('jwt_exp');
+  let jwt_token = localStorage.getItem('atmo_access_jwt');
+    
+  if (jwt_token && now <= exp_date) {
+    router.push('/signin');
+  }
+
   if (!JSON.parse(localStorage.getItem('LocalCards'))) {
     localStorage.setItem("LocalCards", JSON.stringify(localCards));
     localStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));

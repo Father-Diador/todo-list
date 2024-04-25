@@ -11,25 +11,41 @@ const http = {
         })
     },
     getCards: function (callback) {
-        axios.get('http://localhost:8083/tasks')
+        axios.get('http://localhost:8083/tasks', {
+            headers: {
+                Authorization: `Bearer ${params.jwt}`,
+            },
+        })
         .then((res) => {
             callback(res.data);
         })
     },
     saveCard: function (params, callback) {
-        axios.post('http://localhost:8083/create/tasks', params)
+        axios.post('http://localhost:8083/create/tasks', params, {
+            headers: {
+                Authorization: `Bearer ${params.jwt}`,
+            },
+        })
         .then((res) => {
             callback(res);
         })
     },
     deleteCard: function (params, callback) {
-        axios.delete(`http://localhost:8083/delete/tasks/${params}`)
+        axios.delete(`http://localhost:8083/delete/tasks/${params}`, {
+            headers: {
+                Authorization: `Bearer ${params.jwt}`,
+            },
+        })
         .then((res) => {
             callback(res);
         })
     },
     editCard: function (id, params, callback) {
-        axios.patch(`http://localhost:8083/update/tasks/${id}`, params)
+        axios.patch(`http://localhost:8083/update/tasks/${id}`, params,{
+            headers: {
+                Authorization: `Bearer ${params.jwt}`,
+            },
+        })
         .then((res) => {
             callback(res);
         })

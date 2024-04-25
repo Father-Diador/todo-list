@@ -1,9 +1,18 @@
 <template>
   <div class="card">
       <div class="card__wrapper">
-        <div class="card__content" @click.stop="openCard">
+        <div
+          class="card__content"
+          @click.stop="openCard"
+          :class="
+            { 'sphere-background': card.dataType == 'ATMOTASK' }
+          "
+        >
           <div class="card__content__upper">
             <div class="card__content__wrap-t">
+              <span class="card__content__number" v-if="card.number">
+                {{ card.number }}
+              </span>
               <CardStatus v-if="card.status" :card="card" />
               <span class="card__content__title search-word"
                 :class="{ 'card__content__title--shirt': displayValue === 'none' }"
@@ -17,9 +26,6 @@
                 class="card__content__utils__priority search-word"
               />
               <div class="card__content__numbers">
-                <span class="card__content__number" v-if="card.number">
-                  {{ card.number }}
-                </span>
                 <span class="card__content__parentnumber" v-if="card.parentNumber">
                   {{ card.parentNumber }}
                 </span>
@@ -451,6 +457,7 @@ const ChangeCard = (id) => {
       padding: 3px;
       border-radius: 2px;
       white-space: nowrap;
+      margin-right: 10px;
     }
 
     &__parentnumber {
@@ -598,5 +605,9 @@ const ChangeCard = (id) => {
       width: calc(100% - 20px);
     }
   }
+}
+
+.sphere-background {
+  background: gray;
 }
 </style>

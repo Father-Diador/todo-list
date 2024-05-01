@@ -1,5 +1,5 @@
 <template>
-  <div class="main-wrp">
+  <div class="main-wrp" v-if="jwt || disablePage">
     <SideBar v-if="!disablePage" />
     <div class="wrapper">
       <Header v-if="!disablePage" />
@@ -15,12 +15,12 @@ import SideBar from '@/components/SideBar.vue'
 import Header from '@/components/Header.vue'
 import DashBoard from '@/components/DashBoard.vue'
 import CardForm from '@/components/CardCreateForm/App.vue'
-import { computed, onBeforeMount } from "vue";
+import { computed, onBeforeMount, reactive } from "vue";
 import { storeToRefs } from "pinia";
 import { useMenu } from "@/stores/useMenu";
 import { useLocalCards } from "@/stores/useLocalCards";
-import { useRoute } from "vue-router";
-import { useRouter } from "vue-router";
+import { useJwt } from "@/stores/useJwt";
+import { useRoute, useRouter } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
@@ -33,23 +33,41 @@ const disablePage = computed(() => {
   }
 });
 
-const cardsStore = useLocalCards();
-const { selectedOptions, localCards, setCardFromStorage, setOptionFromStorage } = cardsStore;
-const cardPush = (value) => { setCardFromStorage(value) };
-const optionsPush = (value) => { setOptionFromStorage(value) };
-
 const menuStore = useMenu();
 const { isOpen } = storeToRefs(menuStore);
 
-onBeforeMount(() => {
-  let now = new Date();
-  let exp_date = localStorage.getItem('jwt_exp');
-  let jwt_token = localStorage.getItem('atmo_access_jwt');
-    
-  if (jwt_token && now <= exp_date) {
-    router.push('/signin');
-  }
+const cardsStore = useLocalCards();
+const { selectedOptions, localCards, setCardFromStorage, setOptionFromStorage } = cardsStore;
 
+const useJwtStore = useJwt()
+const { setJwt } = useJwtStore;
+
+const { jwt } = storeToRefs(useJwtStore);
+
+// const pageLoader = computed(() => {
+//   console.log(getJwt());
+//   return getJwt();
+// });
+
+const cardPush = (value) => { setCardFromStorage(value) };
+const optionsPush = (value) => { setOptionFromStorage(value) };
+
+const cookies = reactive({});
+
+const jwtParser = () => {
+  cookies.atmo_access = document.cookie.split(";").filter((item) => item.includes("atmo_jwt_access"))[0].slice(16);
+  cookies.atmo_refresh = document.cookie.split(";").filter((item) => item.includes("atmo_jwt_refresh"))[0].slice(18);
+  cookies.atmo_name = document.cookie.split(";").filter((item) => item.includes("atmo_name"))[0].slice(11);
+  setJwt(cookies);
+};
+
+if (!document.cookie) {
+    router.push('/');
+} else {
+  jwtParser();
+}
+
+const localStorageItems = () => {
   if (!JSON.parse(localStorage.getItem('LocalCards'))) {
     localStorage.setItem("LocalCards", JSON.stringify(localCards));
     localStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
@@ -57,6 +75,10 @@ onBeforeMount(() => {
     cardPush(JSON.parse(localStorage.getItem('LocalCards')));
     optionsPush(JSON.parse(localStorage.getItem('selectedOptions')))
   }
+};
+
+onBeforeMount(() => {
+  localStorageItems();
 });
 </script>
 

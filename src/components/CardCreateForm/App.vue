@@ -159,6 +159,12 @@ import { onBeforeMount, reactive, ref } from "vue";
 import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
 import { useCards } from "@/stores/useCards";
+import { useJwt } from "@/stores/useJwt";
+
+const useJwtStore = useJwt()
+const { getJwt } = useJwtStore;
+
+const jwt = getJwt();
 
 const allCardsStore = useCards();
 const { setCards } = allCardsStore;
@@ -189,6 +195,8 @@ let card = reactive({
   date: '',
   endDate: '',
 });
+
+const reqParams = reactive({});
 
 const localStatus = ref(true);
 const isLocale = ref(false);
@@ -240,7 +248,11 @@ const addCard = () => {
       cardPush(card);
     } else {
       if (card.selectedCard) {
-        http.editCard(card.selectedCard, card, (res) => {
+        reqParams.id = card.selectedCard;
+        reqParams.card = card;
+        reqParams.jwt = jwt.atmo_access;
+        reqParams.name = jwt.atmo_name;
+        http.editCard(reqParams, (res) => {
           if (res.error) {
             createToast("Error!", {
               type: "danger",
@@ -249,13 +261,16 @@ const addCard = () => {
             createToast("Success!", {
               type: "success",
             });
-            http.getCards((res) => {
+            http.getCards(jwt.atmo_access, (res) => {
               setCards(res);
             });
           }
         });
       } else {
-        http.saveCard(card, (res) => {
+        reqParams.card = card;
+        reqParams.jwt = jwt.atmo_access;
+        reqParams.name = jwt.atmo_name;
+        http.saveCard(reqParams, (res) => {
           if (res.error) {
             createToast("Error!", {
               type: "danger",
@@ -264,7 +279,7 @@ const addCard = () => {
             createToast("Success!", {
               type: "success",
             });
-            http.getCards((res) => {
+            http.getCards(jwt.atmo_access, (res) => {
               setCards(res);
             });
           }
@@ -282,11 +297,14 @@ const addCard = () => {
 
 // сохранение изменений карточки
 const saveCard = () => {
-  console.log(card);
   if (card.isLocale) {
     editCard(card);
   } else {
-    http.editCard(card.id, card, (res) => {
+    reqParams.id = card.id;
+    reqParams.card = card;
+    reqParams.jwt = jwt.atmo_access;
+    reqParams.name = jwt.atmo_name;
+    http.editCard(reqParams, (res) => {
       if (res.error) {
         createToast("Error!", {
           type: "danger",
@@ -295,7 +313,7 @@ const saveCard = () => {
         createToast("Success!", {
           type: "success",
         });
-        http.getCards((res) => {
+        http.getCards(jwt.atmo_access, (res) => {
           setCards(res);
         });
       }

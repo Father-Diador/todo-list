@@ -15,6 +15,10 @@ import http from "@/js/http";
 import { useRouter } from "vue-router";
 import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
+import { useJwt } from "@/stores/useJwt";
+
+const useJwtStore = useJwt()
+const { setJwt } = useJwtStore;
 
 const router = useRouter();
 
@@ -22,6 +26,15 @@ const data = reactive({
     login: '',
     password: '',
 });
+
+const cookies = reactive({});
+
+const jwtParser = () => {
+  cookies.atmo_access = document.cookie.split(";").filter((item) => item.includes("atmo_jwt_access"))[0].slice(16);
+  cookies.atmo_refresh = document.cookie.split(";").filter((item) => item.includes("atmo_jwt_refresh"))[0].slice(18);
+  cookies.atmo_name = document.cookie.split(";").filter((item) => item.includes("atmo_name"))[0].slice(11);
+  setJwt(cookies);
+};
 
 const login = () => {
     http.auth(data, (res) => {
@@ -34,12 +47,12 @@ const login = () => {
             let time = now.getTime();
             let expireTime = time + 1000*36000;
 
-            // now.setTime(expireTime);
-            // document.cookie = 'cookie=logged;expires='+now.toUTCString()+';path=/';
+            now.setTime(expireTime);
+            document.cookie = 'atmo_jwt_access='+ res.data.accessToken +';expires='+now.toUTCString()+';path=/';
+            document.cookie = 'atmo_jwt_refresh='+ res.data.refreshToken +';expires='+now.toUTCString()+';path=/';
+            document.cookie = 'atmo_name='+ res.data.name +';expires='+now.toUTCString()+';path=/';
 
-            localStorage.setItem('jwt_exp', expireTime);
-            localStorage.setItem('atmo_jwt_access', res.data.jwt);
-            localStorage.setItem('atmo_jwt_refresh', res.data.jwt);
+            jwtParser();
 
             router.push('/allcards');
         } else {
@@ -51,11 +64,7 @@ const login = () => {
 };
 
 onBeforeMount(() => {
-    let now = new Date();
-    let exp_date = localStorage.getItem('jwt_exp');
-    let jwt_token = localStorage.getItem('atmo_access_jwt');
-
-    if (jwt_token && now > exp_date) {
+    if (document.cookie) {
         router.push('/allcards');
     }
 });

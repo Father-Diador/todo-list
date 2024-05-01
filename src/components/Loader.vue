@@ -1,48 +1,32 @@
 <template>
-    <div class="loader__wrapper">
-        <span class="loader"></span>
-        <span class="loader"></span>
-        <span class="loader"></span>
-    </div>
+  <span class="loader"></span>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .loader {
-  width: 108px;
-  height: 16px;
-  background:
-    radial-gradient(circle 8px at 8px center, $accent 100%, transparent 0),
-    radial-gradient(circle 8px at 8px center, $accent 100%, transparent 0);
-  background-size: 16px 16px;
-  background-repeat: no-repeat;
-  position: relative;
-  animation: ballX 1s linear infinite;
-
-  &__wrapper {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-.loader:before {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: $accent;
-  inset:0;
-  margin:auto;
-  animation: moveX 1s cubic-bezier(0.5,300,0.5,-300) infinite;
+  position: relative;
+  animation: rotate 1s linear infinite
 }
-@keyframes ballX {
-  0%,25%,50%,75%, 100%  {background-position: 25% 0,75% 0}
-  40%     {background-position: 25% 0,85% 0}
-  90%     {background-position: 15% 0,75% 0}
+.loader::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid $accent;
+  animation: prixClipFix 2s linear infinite ;
 }
-@keyframes moveX {
-  100% {transform:translate(0.15px)}
+@keyframes rotate {
+  100%   {transform: rotate(360deg)}
+}
+@keyframes prixClipFix {
+  0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+  25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+  50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+  75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+  100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
 }
 </style>

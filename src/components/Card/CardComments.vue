@@ -41,30 +41,27 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import http from '@/js/http';
 import { useLocalCards } from "@/stores/useLocalCards";
 import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
 import { useCards } from "@/stores/useCards";
+import { useJwt } from "@/stores/useJwt";
+
+const useJwtStore = useJwt()
+const { getJwt } = useJwtStore;
+
+const jwt = getJwt();
 
 const allCardsStore = useCards();
 const { setCards } = allCardsStore;
 
+const reqParams = reactive({});
+
 const props = defineProps(['card', 'cardComments']);
 
 const showComments = ref(true);
-
-// const commentsBtn = ref('Показать комментарии');
-
-// const showCommentsFunc = () => {
-//     showComments.value = !showComments.value;
-//     if (showComments.value) {
-//         commentsBtn.value = 'Скрыть комментарии';
-//     } else {
-//         commentsBtn.value = 'Показать комментарии';
-//     }
-// };
 
 const cardsStore = useLocalCards();
 const { setComment } = cardsStore;
@@ -87,7 +84,12 @@ const addComment = () => {
     let params = { id: Date.now(), date: today, value: comment.value };
 
     props.card.comments.push(params);
-    http.editCard(props.card.id, props.card, (res) => {
+
+    reqParams.id = props.card.id;
+    reqParams.card = props.card;
+    reqParams.jwt = jwt.atmo_access;
+    reqParams.name = jwt.atmo_name;
+    http.editCard(reqParams, (res) => {
       if (res.error) {
         createToast("Error!", {
           type: "danger",
@@ -96,7 +98,7 @@ const addComment = () => {
         createToast("Success!", {
           type: "success",
         });
-        http.getCards((res) => {
+        http.getCards(jwt.atmo_access, (res) => {
           setCards(res);
         });
       }

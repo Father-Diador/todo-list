@@ -10,10 +10,10 @@ const http = {
             callback(res);
         })
     },
-    getCards: function (callback) {
+    getCards: function (jwt, callback) {
         axios.get('http://localhost:8083/tasks', {
             headers: {
-                Authorization: `Bearer ${params.jwt}`,
+                Authorization: `Bearer ${jwt}`,
             },
         })
         .then((res) => {
@@ -21,7 +21,11 @@ const http = {
         })
     },
     saveCard: function (params, callback) {
-        axios.post('http://localhost:8083/create/tasks', params, {
+        axios.post('http://localhost:8083/create/tasks', {
+            params: params.card,
+            name: params.name,
+        },
+        {
             headers: {
                 Authorization: `Bearer ${params.jwt}`,
             },
@@ -31,7 +35,10 @@ const http = {
         })
     },
     deleteCard: function (params, callback) {
-        axios.delete(`http://localhost:8083/delete/tasks/${params}`, {
+        axios.delete(`http://localhost:8083/delete/tasks/${params.id}`, {
+            name: params.name,
+        },
+        {
             headers: {
                 Authorization: `Bearer ${params.jwt}`,
             },
@@ -40,8 +47,12 @@ const http = {
             callback(res);
         })
     },
-    editCard: function (id, params, callback) {
-        axios.patch(`http://localhost:8083/update/tasks/${id}`, params,{
+    editCard: function (params, callback) {
+        axios.patch(`http://localhost:8083/update/tasks/${params.id}`, {
+            params: params.card,
+            name: params.name,
+        },
+        {
             headers: {
                 Authorization: `Bearer ${params.jwt}`,
             },

@@ -147,10 +147,14 @@ import CardTags from "@/components/Card/CardTags.vue"
 import CardPriority from "@/components/Card/CardPriority.vue"
 import { useMenu } from "@/stores/useMenu";
 import { useLocalCards } from "@/stores/useLocalCards";
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
 import { useCards } from "@/stores/useCards";
+import { useJwt } from "@/stores/useJwt";
+
+const useJwtStore = useJwt()
+const { getJwt } = useJwtStore;
 
 const allCardsStore = useCards();
 const { setCards } = allCardsStore;
@@ -161,6 +165,10 @@ const { setSelectedCard, changeCardStatus, setEditedCard, setCommentsForCard, se
 const props = defineProps(['card']);
 
 const displayValue = ref('none');
+
+const jwt = getJwt();
+
+const reqParams = reactive({});
 
 const openCard = () => {
   if (displayValue.value == 'none') {
@@ -229,7 +237,10 @@ const deleteCard = (card) => {
   if (card.isLocale) {
     setDeleteCard(card.id);
   } else {
-    http.deleteCard(card.id, (res) => {
+    reqParams.id = card.id;
+    reqParams.jwt = jwt.atmo_access;
+    reqParams.name = jwt.atmo_name;
+    http.deleteCard(reqParams, (res) => {
       if (res.error) {
         createToast("Error!", {
           type: "danger",
@@ -238,7 +249,7 @@ const deleteCard = (card) => {
         createToast("Success!", {
           type: "success",
         });
-        http.getCards((res) => {
+        http.getCards(jwt.atmo_access, (res) => {
           setCards(res);
         });
       }

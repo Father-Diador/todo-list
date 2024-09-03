@@ -54,6 +54,22 @@
         <div class="form__input-pos">
           <label
             class="form__input-pos__label"
+            for="assigne"
+          >
+            Исполнитель
+          </label>
+          <input 
+            name="assigne" 
+            type="text" 
+            v-model="card.assigne"
+            placeholder="Добавьте описание"
+            class="form__input-pos__input"
+          >
+        </div>
+
+        <div class="form__input-pos">
+          <label
+            class="form__input-pos__label"
             for="end"
           >
             Окончание

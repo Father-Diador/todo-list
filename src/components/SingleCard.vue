@@ -5,7 +5,10 @@
           class="card__content"
           @click.stop="openCard"
           :class="
-            { 'sphere-background': card.dataType == 'ATMOTASK' }
+            {
+              'sphere-background': card.dataType == 'ATMOTASK',
+              'selected-card': cardCom && cardCom.id === card.id
+            }
           "
         >
           <div class="card__content__upper">
@@ -619,6 +622,10 @@ const ChangeCard = (id) => {
 }
 
 .sphere-background {
-  background: gray;
+  background: #cccccc;
+}
+
+.selected-card {
+  background: #e6e6e6;
 }
 </style>

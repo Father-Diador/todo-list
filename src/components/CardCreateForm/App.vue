@@ -9,6 +9,8 @@
         <h4>Создать карточку</h4>   
       </div>
 
+      {{ isLocale }}
+
       <div class="form__main-block">
         <div v-if="localStatus" class="form__checkbox">
           <input type="checkbox" v-model="isLocale">
@@ -18,6 +20,21 @@
           >
             Локально
           </label>
+        </div>
+        <div v-if="isLocale || card.isLocale" class="form__input-pos">
+          <label class="form__input-pos__label" for="">
+            Цвет
+          </label>
+          <select
+            v-model="card.color"
+            class="form__input-pos__input"
+          >
+            <option value="">Выберите</option>
+            <option value="#adffff">Синий</option>
+            <option value="#ffcccc">Красный</option>
+            <option value="#ffffcc">Желтый</option>
+            <option value="#dbffed">Зеленый</option>
+          </select>
         </div>
         <div class="form__input-pos">
           <label
@@ -200,6 +217,7 @@ const { setCard, editedCard, selectedCard, editCard, setEditedCard } = cardsStor
 const cardPush = (value) => { setCard(value) };
 
 let card = reactive({
+  color: '',
   priority: '',
   title: '',
   description: '',
@@ -314,6 +332,7 @@ const addCard = () => {
 // сохранение изменений карточки
 const saveCard = () => {
   if (card.isLocale) {
+    console.log(card)
     editCard(card);
   } else {
     reqParams.id = card.id;
@@ -361,6 +380,7 @@ const checkIsEdit = () => {
     localStatus.value = false;
     if (editedCard.isLocale) {
       card.isLocale = editedCard.isLocale;
+      card.color = editedCard.color;
     }
     card.id = editedCard.id;
     card.priority = editedCard.priority;

@@ -34,7 +34,7 @@ const search = (tag)  => {
     width: 100%;
 
     &__title {
-        color: $third-color;
+        color: $color-third;
         font-weight: 600;
     }
 

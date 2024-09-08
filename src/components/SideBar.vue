@@ -137,7 +137,7 @@ const setSort = (sortValue) => {
         // border-radius: 0 7px 7px 0;
         border-bottom: 5px solid transparent;
         border-top: 5px solid transparent;
-        color: $main-color;
+        color: $color-main;
         font-size: 18px;
         line-height: 20px;
         font-weight: 600;
@@ -156,7 +156,7 @@ const setSort = (sortValue) => {
 
         &:hover {
             background: #F7F8FA;
-            color: $second-color;
+            color: $color-second;
             border-radius: 7px;
         }
 
@@ -179,7 +179,7 @@ const setSort = (sortValue) => {
             padding: 10px 17px;
             // border-radius: 0 7px 7px 0;
             // border-left: 5px solid transparent;
-            color: $main-color;
+            color: $color-main;
             font-size: 18px;
             line-height: 20px;
             font-weight: 600;
@@ -198,7 +198,7 @@ const setSort = (sortValue) => {
 
             &:hover {
                 background: #F7F8FA;
-                color: $second-color;
+                color: $color-second;
                 border-radius: 7px;
             }
 
@@ -215,7 +215,7 @@ const setSort = (sortValue) => {
             padding: 10px;
             // border-radius: 0 7px 7px 0;
             border-left: 5px solid transparent;
-            color: $main-color;
+            color: $color-main;
             font-size: 15px;
             line-height: 20px;
             font-weight: 600;
@@ -234,7 +234,7 @@ const setSort = (sortValue) => {
 
             &:hover {
                 background: #F7F8FA;
-                color: $second-color;
+                color: $color-second;
                 border-radius: 7px;
             }
 
@@ -276,7 +276,7 @@ const setSort = (sortValue) => {
 }
 .router-link-exact-active {
     background: #F7F8FA;
-    color: $second-color;
+    color: $color-second;
     border-bottom: 5px solid $accent;
     border-radius: 7px 7px 0 0 !important;
 }

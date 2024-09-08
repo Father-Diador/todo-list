@@ -54,7 +54,7 @@ const props = defineProps(['priority']);
         span {
             font-size: 16px;
             font-weight: 600;
-            color: $main-color;
+            color: $color-main;
         }
     }
 }

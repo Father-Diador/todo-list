@@ -50,7 +50,7 @@ const findText = () => {
         background: $white;
         border: none;
         width: 600px;
-        color: $main-color;
+        color: $color-main;
         font-size: 18px;
         line-height: 18px;
         font-weight: 400;

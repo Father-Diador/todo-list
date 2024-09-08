@@ -97,6 +97,7 @@ export const useLocalCards = defineStore('useLocalCards', () => {
     }
     editedCard.value = null;
     head.id = card.id;
+    head.color = card.color;
     head.priority = card.priority;
     head.title = card.title;
     head.description = card.description;
@@ -108,7 +109,7 @@ export const useLocalCards = defineStore('useLocalCards', () => {
     head.date = card.date;
     head.endDate = card.endDate;
     console.log(localCards.value);
-    localStorage.setItem("allCards", JSON.stringify(localCards.value));
+    localStorage.setItem("LocalCards", JSON.stringify(localCards.value));
   };
 
   const setCardFromStorage = (value) => {

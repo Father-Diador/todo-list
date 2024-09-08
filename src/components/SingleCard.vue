@@ -10,6 +10,7 @@
               'selected-card': cardCom && cardCom.id === card.id
             }
           "
+          :style="{ background: card.color ? card.color : '#ffffff' }"
         >
           <div class="card__content__upper">
             <div class="card__content__wrap-t">
@@ -436,7 +437,7 @@ const ChangeCard = (id) => {
       align-items: center;
       justify-content: flex-start;
       gap: 10px;
-      color: $third-color;
+      color: $color-third;
       font-weight: 600;
     }
 
@@ -490,7 +491,7 @@ const ChangeCard = (id) => {
       align-items: center;
       width: 100%;
       font-size: 18px;
-      color: $third-color;
+      color: $color-third;
       font-weight: 600;
       word-break: break-all;
       gap: 10px;

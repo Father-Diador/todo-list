@@ -6,10 +6,9 @@
     >
       <span @click="toggleMenu" class="form__cancel-btn">×</span>
       <div class="form__title">
-        <h4>Создать карточку</h4>   
+        <h4 v-if="!editedCard">Создать карточку</h4>
+        <h4 v-else>Изменение карточки</h4>
       </div>
-
-      {{ isLocale }}
 
       <div class="form__main-block">
         <div v-if="localStatus" class="form__checkbox">
@@ -21,7 +20,7 @@
             Локально
           </label>
         </div>
-        <div v-if="isLocale || card.isLocale" class="form__input-pos">
+        <div v-if="editedCard" class="form__input-pos">
           <label class="form__input-pos__label" for="">
             Цвет
           </label>
@@ -29,7 +28,6 @@
             v-model="card.color"
             class="form__input-pos__input"
           >
-            <option value="">Выберите</option>
             <option value="#adffff">Синий</option>
             <option value="#ffcccc">Красный</option>
             <option value="#ffffcc">Желтый</option>
@@ -193,9 +191,13 @@ import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
 import { useCards } from "@/stores/useCards";
 import { useJwt } from "@/stores/useJwt";
+import { useColors } from "@/stores/useColors";
 
 const useJwtStore = useJwt()
 const { getJwt } = useJwtStore;
+
+const colorsStore = useColors();
+const { setColors } = colorsStore;
 
 const jwt = getJwt();
 
@@ -329,12 +331,41 @@ const addCard = () => {
   }
 };
 
+const setColor = (card) => {
+  let cardColor = {
+    id: card.id,
+    color: card.color,
+  }
+
+  let colors = JSON.parse(localStorage.getItem('cardColors'));
+
+  if (!colors.length) {
+    colors.push(cardColor);
+  } else {
+    if (colors.find(({}) => el.id == cardColor.id)) {
+      colors.map((el) => {
+        if (el.id == cardColor.id) {
+          el.color = cardColor.color;
+        }
+      });
+    } else {
+      colors.push(cardColor);
+    }
+  }
+
+  setColors(colors)
+
+  localStorage.setItem("cardColors", JSON.stringify(colors))
+};
+
 // сохранение изменений карточки
 const saveCard = () => {
   if (card.isLocale) {
-    console.log(card)
     editCard(card);
   } else {
+    if (card.color) {
+      setColor(card);
+    }
     reqParams.id = card.id;
     reqParams.card = card;
     reqParams.jwt = jwt.atmo_access;
@@ -380,8 +411,10 @@ const checkIsEdit = () => {
     localStatus.value = false;
     if (editedCard.isLocale) {
       card.isLocale = editedCard.isLocale;
-      card.color = editedCard.color;
     }
+
+    card.color = editedCard.color;
+
     card.id = editedCard.id;
     card.priority = editedCard.priority;
     card.title = editedCard.title;

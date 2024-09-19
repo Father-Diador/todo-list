@@ -10,7 +10,7 @@
               'selected-card': cardCom && cardCom.id === card.id
             }
           "
-          :style="{ background: card.color ? card.color : '#ffffff' }"
+          :style="{ background: card.color ? card.color : reactiveColors }"
         >
           <div class="card__content__upper">
             <div class="card__content__wrap-t">
@@ -151,7 +151,8 @@ import CardTags from "@/components/Card/CardTags.vue"
 import CardPriority from "@/components/Card/CardPriority.vue"
 import { useMenu } from "@/stores/useMenu";
 import { useLocalCards } from "@/stores/useLocalCards";
-import { ref, computed, reactive } from "vue";
+import { useColors } from "@/stores/useColors";
+import { ref, computed, reactive, onMounted, watch } from "vue";
 import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
 import { useCards } from "@/stores/useCards";
@@ -165,6 +166,9 @@ const { setCards } = allCardsStore;
 
 const cardsStore = useLocalCards();
 const { setSelectedCard, changeCardStatus, setEditedCard, setCommentsForCard, setDeleteCard } = cardsStore;
+
+const colorsStore = useColors();
+const { colors, getColors } = colorsStore;
 
 const props = defineProps(['card']);
 
@@ -264,6 +268,13 @@ const deleteCard = (card) => {
 const ChangeCard = (id) => {
   changeCardStatus(id);
 };
+
+const reactiveColors = computed(
+  () =>
+    getColors().find(({id}) => id == props.card.id) ?
+    getColors().find(({id}) => id == props.card.id).color :
+    '#ffffff'
+);
 </script>
 
 <style lang="scss" scoped>

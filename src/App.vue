@@ -18,9 +18,13 @@ import CardForm from '@/components/CardCreateForm/App.vue'
 import { computed, onBeforeMount, reactive } from "vue";
 import { storeToRefs } from "pinia";
 import { useMenu } from "@/stores/useMenu";
+import { useColors } from "@/stores/useColors";
 import { useLocalCards } from "@/stores/useLocalCards";
 import { useJwt } from "@/stores/useJwt";
 import { useRoute, useRouter } from "vue-router";
+
+const colorsStore = useColors();
+const { setColors } = colorsStore;
 
 const router = useRouter();
 const route = useRoute();
@@ -74,6 +78,12 @@ const localStorageItems = () => {
   } else {
     cardPush(JSON.parse(localStorage.getItem('LocalCards')));
     optionsPush(JSON.parse(localStorage.getItem('selectedOptions')))
+  }
+
+  if (!JSON.parse(localStorage.getItem('cardColors'))) {
+    localStorage.setItem("cardColors", JSON.stringify([]));
+  } else {
+    setColors(JSON.parse(localStorage.getItem('cardColors')))
   }
 };
 

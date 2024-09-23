@@ -342,7 +342,7 @@ const setColor = (card) => {
   if (!colors.length) {
     colors.push(cardColor);
   } else {
-    if (colors.find(({}) => el.id == cardColor.id)) {
+    if (colors.find((el) => el.id == cardColor.id)) {
       colors.map((el) => {
         if (el.id == cardColor.id) {
           el.color = cardColor.color;
